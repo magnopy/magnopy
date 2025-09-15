@@ -1,0 +1,58 @@
+name: Unit and documentation tests
+
+on:
+  workflow_call:
+    inputs:
+      python-version:
+        description: 'Python version'
+        required: true
+        default: '3.11'
+        type: string
+
+jobs:
+  unit-tests:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: Install package dependencies
+      run: pip install -r requirements.txt
+
+    - name: Install test dependencies
+      run: pip install -r tests/requirements.txt
+
+    - name: Install the package
+      run: pip install .
+
+    - name: Run unit tests
+      run: make test
+
+  doc-tests:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: Install package dependencies
+      run: pip install -r requirements.txt
+
+    - name: Install docs dependencies
+      run: pip install -r docs/requirements.txt
+
+    - name: Install the package
+      run: pip install .
+
+    - name: Make pictures
+      run: make html-from-zero
+
+    - name: Run doctests
+      run: make doctest

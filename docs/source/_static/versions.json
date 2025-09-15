@@ -1,0 +1,12 @@
+[
+    {
+        "name": "v0.2 (latest)",
+        "version": "0.2",
+        "url": "https://docs.magnopy.org/en/latest/"
+    },
+    {
+        "name": "v0.1",
+        "version": "0.1",
+        "url": "https://docs.magnopy.org/en/0.1/"
+    }
+]

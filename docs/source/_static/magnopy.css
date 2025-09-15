@@ -1,0 +1,15 @@
+html[data-theme="light"] {
+    --pst-color-primary: #236AD3;
+}
+
+
+.plotly-figure-caption {
+    text-align: center;
+    font-size: 1.1em;
+}
+
+
+.toctree-wrapper p.caption {
+    font-size: 2.0em;
+    margin-bottom: 0.1em;
+}

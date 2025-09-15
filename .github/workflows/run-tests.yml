@@ -1,0 +1,33 @@
+name: Test against supported python versions
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main]
+
+jobs:
+
+  test-39:
+    uses: magnopy/magnopy/.github/workflows/tests.yml@main
+    with:
+      python-version: '3.9'
+
+  test-310:
+    uses: magnopy/magnopy/.github/workflows/tests.yml@main
+    with:
+      python-version: '3.10'
+
+  test-311:
+    uses: magnopy/magnopy/.github/workflows/tests.yml@main
+    with:
+      python-version: '3.11'
+
+  test-312:
+    uses: magnopy/magnopy/.github/workflows/tests.yml@main
+    with:
+      python-version: '3.12'
+  test-313:
+    uses: magnopy/magnopy/.github/workflows/tests.yml@main
+    with:
+      python-version: '3.13'

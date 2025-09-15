@@ -1,0 +1,78 @@
+.. _release-notes_0.2:
+
+***********
+Version 0.2
+***********
+
+0.2.1
+=====
+
+**Date** : 10 September 2025
+
+Bugfix
+------
+
+* Fix problem with ``np.linalg.trace`` and with ``np.linalm.norm(..., axis=1)`` in
+  ``magnopy.experimental``
+
+0.2.0
+=====
+
+.. warning::
+
+  We do not recommend to use ``magnopy.experimental.plot_spinham`` of this version with
+  old (<2.*) of |numpy|_.
+
+**Date**: 10 September 2025
+
+*   Make matplotlib and plotly optional dependencies. Use ``pip install "magnopy[visual]"``
+    to be able to use plotting functions.
+
+New features
+------------
+
+* ``magnopy.Energy.optimize_generator``
+* ``magnopy.PlotlyEngine``
+* ``magnopy.LSWT.G``
+* ``magnopy.SpinHamiltonian.add_dipole_dipole``
+* ``no_html``, ``hide_personal_data``, ``spglib_symprec`` arguments in
+  ``magnopy.scenarios.solve_lswt``.
+* ``no_html``, ``hide_personal_data``, ``supercell`` arguments in
+  ``magnopy.scenarios.optimize_sd``.
+* ``-s, --supercell``, ``-no-html, --no-html``, ``-hpd, --hide-personal-data``
+  in ``magnopy-optimize-sd``.
+* ``-no-html, --no-html``, ``-hpd, --hide-personal-data``,
+  ``-spg-s, --spglib-symprec``, ``-msdi, --make-sd-image`` in ``magnopy-lswt``.
+* Output of "INITIAL_GUESS.TXT", "SPIN_DIRECTIONS.html" and "SPIN_POSITIONS.txt"
+  of the ``magnopy-optimize-sd`` script.
+* Output of "K-POINTS.html", "SPIN_VECTORS.txt", "HIGH-SYMMETRY_POINTS.txt", "K-POINTS.txt"
+  and  "SPIN_DIRECTIONS.html" of the ``magnopy-lswt`` script.
+
+
+Bug fixes
+---------
+
+* Fix :issue:`40`
+* Fix a bug in ``magnopy.io.dump_vampire`` - material index in .UCF file was always 0,
+  now it varies when it should.
+
+Deprecations
+------------
+
+* ``magnopy.io.output_k_resolved``
+
+Removed
+-------
+
+* ``magnopy.LSWT.G_inv``
+* ``make_sd_image`` argument in ``magnopy.scenarios.solve_lswt`` and
+  ``magnopy.scenarios.optimize_sd``.
+
+Experimental
+------------
+
+Add ``magnopy.experimental`` submodule, where experimental features of magnopy are located.
+Those features might migrate to the core package in the future versions or removed from it.
+
+* ``magnopy.experimental.plot_spinham``
+* ``magnopy.experimental.change_unit_cell``

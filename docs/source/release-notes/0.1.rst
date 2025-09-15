@@ -1,0 +1,143 @@
+.. _release-notes_0.1:
+
+***********
+Version 0.1
+***********
+
+.. warning::
+    We recommend to update from this version of magnopy.
+
+
+0.1.9
+=====
+
+**Date**: 30 June 2025
+
+- Fix :issue:`38`.
+
+
+
+0.1.8
+=====
+
+.. warning::
+    We recommend not to use energy optimization of this version.
+
+**Date**: 26 June 2025
+
+* Fix bugs
+* Fix a bug with spin directions provided in a file (for the scripts that accept that).
+* Fix a bug in Energy with 43 parameters.
+* Add new script with primitive plotter for the spin directions.
+* Add ``full_ham()`` example.
+* Add date and time to the script's output.
+* Add primitive plotter for spin directions to both scripts.
+
+0.1.7
+=====
+
+.. warning::
+    We recommend not to use energy optimization of this version.
+
+**Date**: 12 June 2025
+
+*   Fix bugs
+*   Add parameter converters for ``22`` (``converter22``) and ``422`` (``converter422``)
+    terms.
+*   Add ``alphas`` parameter to the magnetic field addition.
+*   Add multiplication of the Hamiltonian by a number.
+*   Implement reading of the new public file format of |GROGU|_.
+*   Implement summation (and subtraction) of spin Hamiltonians.
+*   Implement submodule with examples.
+*   Implement energy minimization algorithm.
+*   Implement creation of the supercell (warning: not tested)
+*   Implement ``__call__`` (equivalent to ``Energy.E_0``) for ``Energy`` class.
+*   Update LSWT scenario for the convenience of usage within python.
+*   Add spin direction's optimization to the LSWT scenario.
+*   Implement new scenario and command line interface for energy optimization.
+
+0.1.6
+=====
+
+.. warning::
+    We recommend not to use this version with GROGU files.
+
+**Date**: 16 May 2025
+
+*   Fix a typo in ``load_tb2j()``
+*   Fix a bug with reading of TB2J (when no anisotropy is present)
+*   Add reading of magnetic moment from TB2J when no-SOC case is used.
+*   Rename ``-s/--spins`` to ``-sv/--spin-values`` in ``magnopy-lswt``.
+
+0.1.5
+=====
+
+.. warning::
+    We recommend not to use this version.
+
+**Date**: 26 May 2025
+
+*   Fix :issue:`23`.
+*   Rename output file for vampire from "input" to "input-template" to avoid frustrating overwrites.
+
+0.1.4
+=====
+
+.. warning::
+    We recommend not to use this version.
+
+**Date**: 23 May 2025
+
+*   Fix a bug in the TB2J reader. Atom's positions were read as absolute instead of relative.
+    Now they are read as relative, as it should be.
+
+*   Fix various bugs in the vampire output.
+
+0.1.3
+=====
+
+**Date**: 22 May 2025
+
+.. warning::
+    We recommend not to use this version.
+
+*   Start to use the term "convention" instead of "notation" both in documentation and
+    in the code.
+
+*   Add ax.set_xlabel() for the plot with the custom list of kpoints.
+
+*   Change development status from planning to beta in pyproject.toml
+
+*   Remove total energy from the output. It was not really meaningful, as it was summed
+    along the high symmetry path and not across the Brillouin zone. In other words that
+    number was incorrect to be outputted from the very beginning.
+
+0.1.2
+=====
+
+**Date**: 20 May 2025
+
+.. warning::
+    We recommend not to use this version.
+
+Change colors in the plots.
+
+0.1.1
+=====
+
+**Date**: 20 May 2025
+
+.. warning::
+    We recommend not to use this version.
+
+*   Fix a bug with the energy units. In the output "eV" was written instead of "meV".
+    Now it is written "meV". The values were always outputted in meV.
+
+*   Replace GROGU interface for the temporary simpler one.
+
+0.1.0
+=====
+
+**Date**: 19 May 2025
+
+First release of magnopy.
