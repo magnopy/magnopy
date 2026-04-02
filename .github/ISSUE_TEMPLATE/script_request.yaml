@@ -18,14 +18,14 @@ body:
     id: input data
     attributes:
       label: What shall be the input data for the script?
-      description: For example: spin Hamiltonian, spin directions, magnetic field, etc.
+      description: "For example: spin Hamiltonian, spin directions, magnetic field, etc."
     validations:
       required: false
   - type: textarea
     id: configuration parameters
     attributes:
       label: What shall be the configuration parameters of the script?
-      description: For example: k-points, k-path, convergence criteria, etc. 
+      description: "For example: k-points, k-path, convergence criteria, etc." 
     validations:
       required: false
   - type: textarea
