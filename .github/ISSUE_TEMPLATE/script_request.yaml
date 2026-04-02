@@ -1,0 +1,50 @@
+name: Request of cli script
+description: Suggest an idea for the new command line script
+title: "[ENH]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for taking the time to suggest a new command line script!
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is missing?
+      description: Describe the problem that the script should solve
+      placeholder: A clear and concise description of what is missing.
+    validations:
+      required: true
+  - type: textarea
+    id: input data
+    attributes:
+      label: What shall be the input data for the script?
+      description: For example: spin Hamiltonian, spin directions, magnetic field, etc.
+    validations:
+      required: false
+  - type: textarea
+    id: configuration parameters
+    attributes:
+      label: What shall be the configuration parameters of the script?
+      description: For example: k-points, k-path, convergence criteria, etc. 
+    validations:
+      required: false
+  - type: textarea
+    id: context
+    attributes:
+      label: Do you want to add anything?
+      description: Additional comments
+      placeholder: Add other information (if any).
+    validations:
+      required: false
+  - type: dropdown
+    id: os
+    attributes:
+      label: OS
+      description: What operating system are you using?
+      options:
+        - MacOS
+        - Linux
+        - Windows
+        - OS-independent
+    validations:
+      required: false
