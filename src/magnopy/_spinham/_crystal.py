@@ -171,5 +171,87 @@ class _Crystal:
         # Own it before freezing it
         cell = np.array(cell, copy=True)
         cell += 0.0  # -0.0 -> +0.0
-        cell.flags.writeable = False
+        cell.flags["WRITEABLE"] = False
         object.__setattr__(self, "cell", cell)
+
+        ################################## names ###############################
+        names = tuple(self.names)
+        N = len(names)
+
+        for index, name in enumerate(names):
+            if not isinstance(name, str):
+                raise ValueError(
+                    f"names[{index}] is not a str, got {type(name).__name__}"
+                )
+
+        object.__setattr__(self, "names", names)
+
+        ################################ positions #############################
+        positions = _as_array(
+            value=self.positions, name="positions", shape=(N, 3), dtype=float
+        )
+
+        if not np.isfinite(positions).all():
+            raise ValueError("positions contain non-finite elements.")
+
+        # Own it before freezing it
+        positions = np.array(positions, copy=True)
+        positions += 0.0  # -0.0 -> +0.0
+        positions.flags["WRITEABLE"] = False
+        object.__setattr__(self, "positions", positions)
+
+        ################################## spins ###############################
+        spins = _as_array(value=self.spins, name="spins", shape=(N,), dtype=float)
+
+        if not np.isfinite(spins).all():
+            raise ValueError("spins contain non-finite elements")
+
+        if (spins < 0).any():
+            raise ValueError("spins contain negative elements")
+
+        # Own it before freezing it
+        spins = np.array(spins, copy=True)
+        spins += 0.0  # -0.0 -> +0.0
+        spins.flags["WRITEABLE"] = False
+        object.__setattr__(self, "spins", spins)
+
+        ################################ g-factors #############################
+        g_factors = _as_array(
+            value=self.g_factors, name="g-factors", shape=(N,), dtype=float
+        )
+
+        if not np.isfinite(g_factors).all():
+            raise ValueError("g_factors contain non-finite elemetns")
+
+        if (np.abs(g_factors) < _SINGULAR_TOL).any():
+            raise ValueError("g_factors contain zero-valued elements")
+
+        # Own it before freezing it
+        g_factors = np.array(g_factors, copy=True)
+        # No need for normalization
+        g_factors.flags["WRITEABLE"] = False
+        object.__setattr__(self, "g_factors", g_factors)
+
+        ################################# magnetic #############################
+        magnetic = _as_array(
+            value=self.magnetic, name="magnetic", shape=(N,), dtype=int
+        )
+
+        for index, m_flag in enumerate(magnetic):
+            if m_flag not in [True, False, 1, 0]:
+                raise ValueError(
+                    f"magnetic[{index}] is not in [True, False, 1, 0], got {m_flag}"
+                )
+
+        # Own it before frezing it
+        magnetic = np.array(magnetic, copy=True, dtype=bool)
+        # No need for normalization
+        magnetic.flags["WRITEABLE"] = False
+        object.__setattr__(self, "magnetic", magnetic)
+
+        ############################### validation #############################
+        if N == 0:
+            raise ValueError("The crystal is empty (N == 0)")
+
+        if magnetic.sum() == 0:
+            raise ValueError("All atoms are non-magnetic")
