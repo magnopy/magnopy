@@ -21,6 +21,55 @@ from dataclasses import dataclass
 import numpy as np
 
 
+def _as_array(value, name, shape, dtype) -> np.ndarray:
+    """
+    Coerce ``value`` to a plain ``numpy.ndarray`` of ``dtype`` and ``shape``.
+
+    Coercion and shape check only -- no value level validation.
+
+    Any failure is re-raised as ``ValueError``.
+
+    Parameters
+    ----------
+    value : |array-like|_
+    name : str
+        Field name, used in error messages.
+    shape : tuple of int
+        Required shape. Checked exactly.
+    dtype : type
+        Target type passed directly to ``numpy.asarray``.
+
+    Returns
+    -------
+    array : (``shape``) :numpy:`ndarray` of type ``dtype``
+        May alias ``value`` if it was already a matching ndarray.
+
+    Raises
+    ------
+    ValueError
+        If ``value`` cannot be interpreted as ``dtype``, or its shape differs from
+        ``shape``.
+    """
+
+    try:
+        array = np.asarray(value, dtype=dtype)
+    except (ValueError, TypeError) as error:
+        raise ValueError(
+            f"{name} could not be interpreted as an array of {np.dtype(dtype)} of "
+            f"shape {shape}. Got {type(value).__name__}. (numpy: {error})"
+        ) from error
+
+    if array.shape != shape:
+        raise ValueError(f"{name} must have shape {shape}, got {array.shape}.")
+
+    return array
+
+
+# Numerical tolerance for checking whether cell is singular
+# Scale-free
+_SINGULAR_TOL = 1e-10
+
+
 # eq=False, generated __eq__ compares fields with ==,
 # which returns an array for ndarrays, not a bool.
 # __eq__ is supplied
@@ -102,3 +151,25 @@ class _Crystal:
     spins: np.ndarray  # (N,)   float
     g_factors: np.ndarray  # (N,)   float
     magnetic: np.ndarray  # (N,)   bool
+
+    def __post_init__(self):
+
+        ################################## cell ################################
+        cell = _as_array(value=self.cell, name="cell", shape=(3, 3), dtype=float)
+        if not np.isfinite(cell).all():
+            raise ValueError("Cell contains non-finite elements.")
+
+        scale = float(np.abs(cell).max())
+        det = float(np.linalg.det(cell))
+        if scale == 0.0 or abs(det) < _SINGULAR_TOL * scale**3:
+            raise ValueError(
+                f"cell must be non-singular, got det = {det:.3e} "
+                f"|det|/max|cell|^3 = {abs(det) / scale**3 if scale else 0.0:.3e}; "
+                f"the three lattice vectors must be linearly independent."
+            )
+
+        # Own it before freezing it
+        cell = np.array(cell, copy=True)
+        cell += 0.0  # -0.0 -> +0.0
+        cell.flags.writeable = False
+        object.__setattr__(self, "cell", cell)
