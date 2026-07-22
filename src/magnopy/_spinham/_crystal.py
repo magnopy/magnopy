@@ -18,12 +18,20 @@
 # this program.  If not, see <https://www.gnu.org/licenses/>.
 # ================================ END LICENSE =================================
 from dataclasses import dataclass
+from functools import cached_property
 import numpy as np
 
 
-def _as_array(value, name, shape, dtype) -> np.ndarray:
+# Dimensionless numerical tolerance for checking whether the cell is singular.
+# |det(cell)| is a sizable fraction of the |max(cell)|^3 (its bounding box).
+# if the ration of det/box is too small (< _SINGULAR_TOL), then the cell is
+# considered to be singular. The tolerance is relative by design.
+_SINGULAR_TOL = 1e-10
+
+
+def _as_float_array(value, name, shape) -> np.ndarray:
     """
-    Coerce ``value`` to a plain ``numpy.ndarray`` of ``dtype`` and ``shape``.
+    Coerce ``value`` to a plain ``numpy.ndarray`` of float and ``shape``.
 
     Coercion and shape check only -- no value level validation.
 
@@ -36,38 +44,81 @@ def _as_array(value, name, shape, dtype) -> np.ndarray:
         Field name, used in error messages.
     shape : tuple of int
         Required shape. Checked exactly.
-    dtype : type
-        Target type passed directly to ``numpy.asarray``.
 
     Returns
     -------
-    array : (``shape``) :numpy:`ndarray` of type ``dtype``
+    array : (``shape``) :numpy:`ndarray` of type float
         May alias ``value`` if it was already a matching ndarray.
 
     Raises
     ------
     ValueError
-        If ``value`` cannot be interpreted as ``dtype``, or its shape differs from
-        ``shape``.
+        If ``value`` cannot be interpreted as array of floats, or its shape differs
+        from ``shape``, or it contains non-finite elements.
     """
 
     try:
-        array = np.asarray(value, dtype=dtype)
+        array = np.asarray(value, dtype=float)
     except (ValueError, TypeError) as error:
         raise ValueError(
-            f"{name} could not be interpreted as an array of {np.dtype(dtype)} of "
-            f"shape {shape}. Got {type(value).__name__}. (numpy: {error})"
+            f"{name} could not be interpreted as an array of float. "
+            f"Got {type(value).__name__}. (numpy: {error})"
         ) from error
 
     if array.shape != shape:
         raise ValueError(f"{name} must have shape {shape}, got {array.shape}.")
 
+    if not np.all(np.isfinite(array)):
+        raise ValueError(f"{name} contains non-finite elements.")
+
     return array
 
 
-# Numerical tolerance for checking whether cell is singular
-# Scale-free
-_SINGULAR_TOL = 1e-10
+def _as_bool_array(value, name, shape) -> np.ndarray:
+    """
+    Coerce ``value`` to a plain ``numpy.ndarray`` of bool and ``shape``.
+
+    Coercion and shape check only -- no value level validation.
+
+    Any failure is re-raised as ``ValueError``.
+
+    Parameters
+    ----------
+    value : |array-like|_
+    name : str
+        Field name, used in error messages.
+    shape : tuple of int
+        Required shape. Checked exactly.
+
+    Returns
+    -------
+    array : (``shape``) :numpy:`ndarray` of type bool
+        May alias ``value`` if it was already a matching ndarray.
+
+    Raises
+    ------
+    ValueError
+        If ``value`` cannot be interpreted as array of bools, or its shape differs
+        from ``shape``, or if its elements are not in ``[True, False, 1, 0]``.
+    """
+
+    ALLOWED_ELEMENTS = [True, False, 1, 0]
+
+    try:
+        array = np.asarray(value)
+    except (ValueError, TypeError) as error:
+        raise ValueError(
+            f"{name} could not be interpreted as an array (numpy: {error})."
+        ) from error
+
+    if array.shape != shape:
+        raise ValueError(f"{name} must have shape {shape}, got {array.shape}.")
+
+    if not np.all(np.isin(array, ALLOWED_ELEMENTS)):
+        bad = np.unique(array[~np.isin(array, ALLOWED_ELEMENTS)])
+        raise ValueError(f"{name} must be 0, 1 or bool, got {bad.tolist()}.")
+
+    return array.astype(bool)
 
 
 # eq=False, generated __eq__ compares fields with ==,
@@ -154,29 +205,32 @@ class _Crystal:
 
     def __post_init__(self):
 
-        ################################## cell ################################
-        cell = _as_array(value=self.cell, name="cell", shape=(3, 3), dtype=float)
-        if not np.isfinite(cell).all():
-            raise ValueError("Cell contains non-finite elements.")
+        ############################# types & shape ############################
+        names = tuple(self.names)
+        N = len(names)
+        if N == 0:
+            raise ValueError(
+                "The crystal is empty (N == 0), must have at least one atom."
+            )
 
+        cell = _as_float_array(value=self.cell, name="cell", shape=(3, 3))
+        positions = _as_float_array(
+            value=self.positions, name="positions", shape=(N, 3)
+        )
+        spins = _as_float_array(value=self.spins, name="spins", shape=(N,))
+        g_factors = _as_float_array(value=self.g_factors, name="g-factors", shape=(N,))
+
+        magnetic = _as_bool_array(self.magnetic, name="magnetic", shape=(N,))
+
+        ############################### validate ###############################
         scale = float(np.abs(cell).max())
         det = float(np.linalg.det(cell))
         if scale == 0.0 or abs(det) < _SINGULAR_TOL * scale**3:
             raise ValueError(
-                f"cell must be non-singular, got det = {det:.3e} "
+                f"cell must be non-singular, got det = {det:.3e}; "
                 f"|det|/max|cell|^3 = {abs(det) / scale**3 if scale else 0.0:.3e}; "
                 f"the three lattice vectors must be linearly independent."
             )
-
-        # Own it before freezing it
-        cell = np.array(cell, copy=True)
-        cell += 0.0  # -0.0 -> +0.0
-        cell.flags["WRITEABLE"] = False
-        object.__setattr__(self, "cell", cell)
-
-        ################################## names ###############################
-        names = tuple(self.names)
-        N = len(names)
 
         for index, name in enumerate(names):
             if not isinstance(name, str):
@@ -184,74 +238,67 @@ class _Crystal:
                     f"names[{index}] is not a str, got {type(name).__name__}"
                 )
 
-        object.__setattr__(self, "names", names)
-
-        ################################ positions #############################
-        positions = _as_array(
-            value=self.positions, name="positions", shape=(N, 3), dtype=float
-        )
-
-        if not np.isfinite(positions).all():
-            raise ValueError("positions contain non-finite elements.")
-
-        # Own it before freezing it
-        positions = np.array(positions, copy=True)
-        positions += 0.0  # -0.0 -> +0.0
-        positions.flags["WRITEABLE"] = False
-        object.__setattr__(self, "positions", positions)
-
-        ################################## spins ###############################
-        spins = _as_array(value=self.spins, name="spins", shape=(N,), dtype=float)
-
-        if not np.isfinite(spins).all():
-            raise ValueError("spins contain non-finite elements")
-
-        if (spins < 0).any():
+        if np.any(spins < 0):
             raise ValueError("spins contain negative elements")
 
-        # Own it before freezing it
-        spins = np.array(spins, copy=True)
-        spins += 0.0  # -0.0 -> +0.0
-        spins.flags["WRITEABLE"] = False
-        object.__setattr__(self, "spins", spins)
-
-        ################################ g-factors #############################
-        g_factors = _as_array(
-            value=self.g_factors, name="g-factors", shape=(N,), dtype=float
-        )
-
-        if not np.isfinite(g_factors).all():
-            raise ValueError("g_factors contain non-finite elemetns")
-
-        if (np.abs(g_factors) < _SINGULAR_TOL).any():
+        if np.any(g_factors == 0):
             raise ValueError("g_factors contain zero-valued elements")
 
-        # Own it before freezing it
-        g_factors = np.array(g_factors, copy=True)
-        # No need for normalization
-        g_factors.flags["WRITEABLE"] = False
-        object.__setattr__(self, "g_factors", g_factors)
+        if not np.any(magnetic):
+            raise ValueError("At least one atom must be magnetic, got none.")
 
-        ################################# magnetic #############################
-        magnetic = _as_array(
-            value=self.magnetic, name="magnetic", shape=(N,), dtype=int
+        ############################# copy & freeze ############################
+        object.__setattr__(self, "names", names)
+        for name, array in [
+            ("cell", cell),
+            ("positions", positions),
+            ("spins", spins),
+            ("g_factors", g_factors),
+            ("magnetic", magnetic),
+        ]:
+            # Own it before freezing it
+            if name == "magnetic":
+                array = np.array(array, dtype=bool, copy=True)
+            else:
+                array = np.array(array, copy=True, dtype=float)
+                # -0.0 -> +0.0
+                array += 0.0
+            array.flags["WRITEABLE"] = False
+            object.__setattr__(self, name, array)
+
+    @cached_property
+    def _hash_key(self):
+        return hash(
+            (
+                self.names,
+                self.cell.tobytes(),
+                self.positions.tobytes(),
+                self.spins.tobytes(),
+                self.g_factors.tobytes(),
+                self.magnetic.tobytes(),
+            )
         )
 
-        for index, m_flag in enumerate(magnetic):
-            if m_flag not in [True, False, 1, 0]:
-                raise ValueError(
-                    f"magnetic[{index}] is not in [True, False, 1, 0], got {m_flag}"
-                )
+    def __hash__(self):
+        return self._hash_key
 
-        # Own it before frezing it
-        magnetic = np.array(magnetic, copy=True, dtype=bool)
-        # No need for normalization
-        magnetic.flags["WRITEABLE"] = False
-        object.__setattr__(self, "magnetic", magnetic)
+    def __eq__(self, other):
+        r"""
+        Exact (bitwise) comparison, consistent with :py:meth:`.__hash__`.
 
-        ############################### validation #############################
-        if N == 0:
-            raise ValueError("The crystal is empty (N == 0)")
+        Answers *is this the same value?*. For *is this the same material?* use
+        :py:meth:`.is_close`.
+        """
 
-        if magnetic.sum() == 0:
-            raise ValueError("All atoms are non-magnetic")
+        if not isinstance(other, _Crystal):
+            return NotImplemented
+
+        return (
+            self._hash_key == other._hash_key  # cheap fail
+            and self.names == other.names
+            and self.cell.tobytes() == other.cell.tobytes()
+            and self.positions.tobytes() == other.positions.tobytes()
+            and self.spins.tobytes() == other.spins.tobytes()
+            and self.g_factors.tobytes() == other.g_factors.tobytes()
+            and self.magnetic.tobytes() == other.magnetic.tobytes()
+        )

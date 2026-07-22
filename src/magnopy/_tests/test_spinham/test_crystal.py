@@ -52,6 +52,17 @@ ARRAY_FIELDS = FLOAT_ARRAY_FIELDS + BOOL_ARRAY_FIELDS
 PER_ATOM_FIELDS = ("positions", "spins", "g_factors", "magnetic")
 ALL_FIELDS = ARRAY_FIELDS + ("names",)
 
+
+################################################################################
+#                                _as_array tests                               #
+################################################################################
+def test_non_finite_rejected_after_coercion():
+    # isfinite must run on the coerced array; on an object-type array it raises
+    # TypeError instead of validation
+    with pytest.raises(ValueError, match="non-finite"):
+        make(spins=np.array([2.5, np.inf], dtype=object))
+
+
 ################################################################################
 #                                  Field tests                                 #
 ################################################################################
@@ -83,6 +94,11 @@ def test_near_singular_cell_rejected():
 def test_singularity_check_is_scale_free():
     for a in [1e-3, 1e-1, 1.0, 1e2, 1e4]:
         make(cell=a * np.eye(3))  # must not raise
+
+
+def test_non_str_names_rejected():
+    with pytest.raises(ValueError, match="str"):
+        make(names=(1, 2))
 
 
 @pytest.mark.parametrize("field", FLOAT_ARRAY_FIELDS)
@@ -161,6 +177,16 @@ def test_magnetic_other_integers_rejected():
         make(magnetic=[1, 2])
 
 
+def test_magnetic_near_one_rejected():
+    # dtype=int would truncate 1.000042 -> 1 before validation could see it
+    with pytest.raises(ValueError):
+        make(magnetic=[1.0, 1.000042])
+
+
+def test_magnetic_accepts_negative_zero():
+    assert make(magnetic=[-0.0, 1.0]).magnetic.tolist() == [False, True]
+
+
 def test_cell_not_array_like_raises_value_error():
     with pytest.raises(ValueError):
         make(cell="not a cell")
@@ -214,8 +240,17 @@ def test_float_fields_are_float64_ndarray(field):
 
 @pytest.mark.parametrize("field", BOOL_ARRAY_FIELDS)
 def test_bool_fields_are_bool_ndarrays(field):
-    crystal = make(magnetic=[1, 0])
+    crystal = make()
     arr = getattr(crystal, field)
+    assert isinstance(arr, np.ndarray)
+    assert arr.dtype == bool
+
+
+@pytest.mark.parametrize("data", ([1, 0], [True, False], [1.0, 0.0]))
+def test_magnetic_stored_as_bool_ndarrays(data):
+    crystal = make(magnetic=data)
+    arr = getattr(crystal, "magnetic")
+    assert isinstance(arr, np.ndarray)
     assert arr.dtype == bool
 
 
@@ -245,6 +280,12 @@ def test_mixed_containers_are_accepted():
 ################################################################################
 #                                 Immutability                                 #
 ################################################################################
+
+
+def test_stored_names_are_read_only():
+    crystal = make()
+    with pytest.raises(TypeError):
+        crystal.names[0] = "New name"
 
 
 @pytest.mark.parametrize("field", ARRAY_FIELDS)
@@ -285,6 +326,12 @@ def test_constructor_copies_its_arguments():
 ################################################################################
 #                                  Identities                                  #
 ################################################################################
+
+
+def test_crystal_equals_itself():
+    crystal = make()
+    assert crystal == crystal
+    assert hash(crystal) == hash(crystal)
 
 
 def test_equal_crystals_are_equal_and_hash_alike():
