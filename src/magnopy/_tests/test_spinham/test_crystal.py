@@ -17,6 +17,8 @@
 # You should have received a copy of the  GNU General Public License  along with
 # this program.  If not, see <https://www.gnu.org/licenses/>.
 # ================================ END LICENSE =================================
+
+from dataclasses import fields
 import numpy as np
 import pytest
 
@@ -45,9 +47,19 @@ def make(**overrides):
 
 
 FLOAT_ARRAY_FIELDS = ("cell", "positions", "spins", "g_factors")
-BOOL_ARRAY_FIELDS = "magnetic"
+BOOL_ARRAY_FIELDS = ("magnetic",)
 ARRAY_FIELDS = FLOAT_ARRAY_FIELDS + BOOL_ARRAY_FIELDS
 PER_ATOM_FIELDS = ("positions", "spins", "g_factors", "magnetic")
+ALL_FIELDS = ARRAY_FIELDS + ("names",)
+
+################################################################################
+#                                  Field tests                                 #
+################################################################################
+
+
+def test_field_constants_match_dataclass():
+    assert set(ALL_FIELDS) == {_.name for _ in fields(_Crystal)}
+
 
 ################################################################################
 #                               Validation tests                               #
@@ -70,7 +82,7 @@ def test_near_singular_cell_rejected():
 
 def test_singularity_check_is_scale_free():
     for a in [1e-3, 1e-1, 1.0, 1e2, 1e4]:
-        make(cell=a * np.ones(3))  # must not raise
+        make(cell=a * np.eye(3))  # must not raise
 
 
 @pytest.mark.parametrize("field", FLOAT_ARRAY_FIELDS)
@@ -125,7 +137,7 @@ def test_length_mismatch_rejected(field):
 @pytest.mark.parametrize(
     "field, bad_value",
     (
-        ("cell", np.eye(3)),
+        ("cell", np.eye(2)),
         ("cell", np.ones((3, 3, 3))),
         ("positions", [[0.0, 0.0], [0.5, 0.5]]),  # (N, 2)
         ("spins", [[2.5], [2.5]]),  # (N, 1)
@@ -159,16 +171,20 @@ def test_ragged_positions_rejected():
         make(positions=[[0, 0, 0], [1, 1]])
 
 
-def test_missing_field_is_type_error():
+@pytest.mark.parametrize("missing", ALL_FIELDS)
+def test_missing_field_is_type_error(missing):
     # No defaults in _Crystal.
+    kwargs = dict(
+        cell=np.eye(3),
+        names=("Fe", "Fe"),
+        positions=[[0.0, 0.0, 0.0], [0.5, 0.5, 0.5]],
+        spins=[2.5, 2.5],
+        g_factors=[2.0, 2.0],
+        magnetic=[True, True],
+    )
+    del kwargs[missing]
     with pytest.raises(TypeError):
-        _Crystal(
-            cell=np.eye(3),
-            names=("Fe",),
-            positions=[[0, 0, 0]],
-            spins=[2.5],
-            g_factors=[2.0],
-        )
+        _Crystal(**kwargs)
 
 
 ################################################################################
@@ -222,7 +238,7 @@ def test_mixed_containers_are_accepted():
         positions=[(0.0, 0.0, 0.0), np.array([0.5, 0.5, 0.5])],
         spins=(2.5, 2.5),
         g_factors=np.array([2.0, 2.0]),
-        magnetic=[1, False],
+        magnetic=[True, False],
     )
 
 
@@ -231,18 +247,18 @@ def test_mixed_containers_are_accepted():
 ################################################################################
 
 
-@pytest.marj.parametrize("field", ARRAY_FIELDS)
+@pytest.mark.parametrize("field", ARRAY_FIELDS)
 def test_stored_arrays_are_read_only(field):
     crystal = make()
     with pytest.raises(ValueError):
         getattr(crystal, field)[0] = 0
 
 
-@pytest.mark.parametrize("field", ARRAY_FIELDS)
-def tet_fields_cannot_be_rebound(field):
+@pytest.mark.parametrize("field", ALL_FIELDS)
+def test_fields_cannot_be_rebound(field):
     crystal = make()
-    with pytest.raises(Exception):
-        setattr(crystal, field, np.zeros(3))
+    with pytest.raises(AttributeError):
+        setattr(crystal, field, "new value")
 
 
 def test_caller_array_stays_writable():
@@ -283,8 +299,7 @@ def test_crystal_is_usable_as_dict_key():
 
 
 @pytest.mark.parametrize(
-    "field",
-    "value",
+    "field, value",
     (
         ("cell", 2 * np.eye(3)),
         ("names", ("Fe", "Ni")),
@@ -304,7 +319,7 @@ def test_names_are_part_of_the_crystal():
 
 def test_equality_is_exact_not_tolerant():
     assert make() != make(
-        positions=[[0.0, 0.0, 0.0], [0.5 + np.spacong(0.5), 0.5, 0.5]]
+        positions=[[0.0, 0.0, 0.0], [0.5 + np.spacing(0.5), 0.5, 0.5]]
     )
 
 
@@ -350,7 +365,7 @@ def test_is_close_rejects_different_names():
     assert not make(names=("Fe", "Fe")).is_close(make(names=("Fe", "Ni")))
 
 
-def test_is_close_rejects_different_magentic_sites():
+def test_is_close_rejects_different_magnetic_sites():
     assert not make(magnetic=[True, True]).is_close(make(magnetic=[True, False]))
 
 
@@ -360,8 +375,29 @@ def test_is_close_rejects_physically_different_positions():
     )
 
 
+def test_is_close_rejects_different_g_factors():
+    assert not make().is_close(make(g_factors=[2.0, 2.5]))
+
+
+def test_is_close_rejects_different_spins():
+    assert not make().is_close(make(spins=[2.5, 1.5]))
+
+
+def test_is_close_rejects_different_length():
+    # Needs to be handled before any allclose, which would raise on shape mismatch
+    c_3 = make(
+        names=("Fe", "Fe", "Fe"),
+        positions=[[0.0, 0.0, 0.0], [0.5, 0.5, 0.5], [0.25, 0.25, 0.25]],
+        spins=[2.5, 2.5, 2.5],
+        g_factors=[2.0, 2.0, 2.0],
+        magnetic=[True, True, True],
+    )
+    assert not make().is_close(c_3)
+
+
 def test_is_close_is_reflexive_and_symmetric():
-    c1, c2 = make(), make()
+    c1 = make(positions=[[0.0, 0.0, 0.0], [0.5, 0.5, 0.5]])
+    c2 = make(positions=[[0.0, 0.0, 0.0], [0.5 + np.spacing(0.5), 0.5, 0.5]])
     assert c1.is_close(c1)
     assert c1.is_close(c2) == c2.is_close(c1)
 
