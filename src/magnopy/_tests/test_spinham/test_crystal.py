@@ -19,6 +19,7 @@
 # ================================ END LICENSE =================================
 
 from dataclasses import fields
+from inspect import signature
 import numpy as np
 import pytest
 
@@ -463,3 +464,149 @@ def test_is_close_is_not_transitive():
     assert c1.is_close(c2, atol=atol)
     assert c2.is_close(c3, atol=atol)
     assert not c1.is_close(c3, atol=atol)
+
+
+def test_is_close_uses_atol_boundary():
+    # Just under and just over: pins that atol is actually applied to positions
+    atol = 1e-9
+    under = make(positions=[[0.9 * atol, 0.0, 0.0], [0.5, 0.5, 0.5]])
+    over = make(positions=[[1.1 * atol, 0.0, 0.0], [0.5, 0.5, 0.5]])
+    assert make().is_close(under, atol=atol)
+    assert not make().is_close(over, atol=atol)
+
+
+def test_is_close_atol_applies_to_spins_and_g_factors():
+    atol = 1e-6
+    assert make().is_close(make(spins=[2.5, 2.5 + 0.9 * atol]), atol=atol)
+    assert not make().is_close(make(spins=[2.5, 2.5 + 1.1 * atol]), atol=atol)
+    assert make().is_close(make(g_factors=[2.0, 2.0 + 0.9 * atol]), atol=atol)
+    assert not make().is_close(make(g_factors=[2.0, 2.0 + 1.1 * atol]), atol=atol)
+
+
+def test_is_close_cell_uses_relative_tolerance():
+    # cell has physical dimensions and magnopy does not make strict assumption about
+    # its units. Thus, the same relative discrepancy must be accepted (or rejected)
+    # whether the cell is given in angstrom, nanometer or else. An absolute tolerance
+    # can not achieve that.
+    rtol = 1e-11
+    for a in (1.0, 1e-3, 1e3, 1e-10):
+        crystal1 = make(cell=a * np.eye(3))
+        crystal2 = make(cell=a * (1.0 + rtol) * np.eye(3))
+        assert crystal1.is_close(crystal2, cell_rtol=10 * rtol), (
+            f"Failed with scale {a} (close)"
+        )
+        assert not crystal1.is_close(crystal2, cell_rtol=0.1 * rtol), (
+            f"Failed with scale {a} (not close)"
+        )
+
+
+def test_is_close_cell_ignores_atol():
+    a = 1e6
+    c1 = make(cell=a * np.eye(3))
+    c2 = make(cell=(a + 1e-3) * np.eye(3))
+    assert c1.is_close(c2, atol=1e-8, cell_rtol=1e-8)
+
+
+def test_is_close_wraps_only_integer_offsets():
+    # 0.4, 0.6 are not the same site
+    # guard against over-eager wrappers
+    c1 = make(positions=[[0.0, 0.0, 0.0], [0.4, 0.5, 0.5]])
+    c2 = make(positions=[[0.0, 0.0, 0.0], [0.6, 0.5, 0.5]])
+    assert not c1.is_close(c2)
+
+
+def test_is_close_wraps_boundary_half_cell():
+    # Whatever the implementation of wrapper does it must not call these two close
+    c1 = make(positions=[[0.0, 0.0, 0.0], [0.0, 0.5, 0.5]])
+    c2 = make(positions=[[0.5, 0.0, 0.0], [0.0, 0.5, 0.5]])
+    assert not c1.is_close(c2)
+
+
+def test_is_close_with_non_crystal():
+    with pytest.raises(TypeError):
+        make().is_close(42)
+
+
+################################################################################
+#                                     diff                                     #
+################################################################################
+
+
+# iff == "if and only if"
+def test_diff_empty_iff_is_close():
+    assert make().diff(make()) == ()
+    assert make().diff(make(spins=[2.5, 1.5])) != ()
+
+
+@pytest.mark.parametrize(
+    "overrides",
+    (
+        {},
+        {"g_factors": [2.0, 2.1]},
+        {"names": ("Fe", "Ni")},
+    ),
+)
+def test_diff_and_is_close_agree(overrides):
+    other = make(**overrides)
+    assert make().is_close(other) == (make().diff(other) == ())
+
+
+@pytest.mark.parametrize(
+    "field, value, mentioned",
+    (
+        ("cell", 2 * np.eye(3), "cell"),
+        ("names", ("Fe", "Ni"), "name"),
+        ("positions", [[0.0, 0.0, 0.0], [0.25, 0.25, 0.25]], "position"),
+        ("spins", [2.5, 1.5], "spin"),
+        ("g_factors", [2.0, 2.1], "factor"),
+        ("magnetic", [True, False], "magnetic"),
+    ),
+)
+def test_diff_names_the_mismatched_field(field, value, mentioned):
+    report = " ".join(make().diff(make(**{field: value})))
+    assert mentioned in report.lower()
+
+
+def test_diff_reports_every_different_field():
+    report = make().diff(make(spins=[2.5, 1.5], g_factors=[2.0, 2.5]))
+    joined = " ".join(report).lower()
+    assert "spin" in joined and "factor" in joined
+
+
+def test_diff_on_different_length():
+    c_3 = make(
+        names=("Fe", "Fe", "Fe"),
+        positions=[[0.0, 0.0, 0.0], [0.5, 0.5, 0.5], [0.25, 0.25, 0.25]],
+        spins=[2.5, 2.5, 2.5],
+        g_factors=[2.0, 2.0, 2.0],
+        magnetic=[True, True, True],
+    )
+    report = make().diff(c_3)
+    assert report != ()
+
+
+def test_diff_with_non_crystal_raises():
+    with pytest.raises(TypeError):
+        make().diff(42)
+
+
+def test_is_close_and_diff_share_a_signature():
+    # is_close forwards to diff, so their signature shall not drift apart
+    assert (
+        signature(_Crystal.is_close).parameters == signature(_Crystal.diff).parameters
+    )
+
+
+def test_diff_returns_a_tuple_of_strings():
+    c_3 = make(
+        names=("Fe", "Fe", "Fe"),
+        positions=[[0.0, 0.0, 0.0], [0.5, 0.5, 0.5], [0.25, 0.25, 0.25]],
+        spins=[2.5, 2.5, 2.5],
+        g_factors=[2.0, 2.0, 2.0],
+        magnetic=[True, True, True],
+    )
+
+    # Gurads the lenght ismatch branch
+    report = make().diff(c_3)
+    assert isinstance(report, tuple)
+    assert all(isinstance(line, str) for line in report)

@@ -181,19 +181,6 @@ class _Crystal:
     in has no effect on the crystal. The stored arrays are read-only:
     ``crystal.positions[0] = [0, 0, 0]`` raises ``ValueError``.
 
-    ``__eq__`` and ``__hash__`` are exact (bitwise). ``is_close`` is a tolerant
-    comparison. ``__eq__`` answers *is this the same value?*, ``is_close`` answers
-    *is this the same material?*.
-
-    Two crystals describing the same material, built through different routes, may
-    differ in their float-valued attributes due to rounding errors (with no physical
-    significance), therefore ``__eq__`` compares them unequal. ``is_close`` is
-    introduced to handle that case.
-
-    ``is_close`` cannot serve as ``__eq__``. Dictionaries and sets require equality to
-    be an equivalence relation, and a tolerant comparison is not one: three crystals
-    might satisfy ``a.is_close(b)`` and ``b.is_close(c)`` while ``a`` and ``c`` are not
-    close.
     """
 
     cell: np.ndarray
@@ -266,6 +253,10 @@ class _Crystal:
             array.flags["WRITEABLE"] = False
             object.__setattr__(self, name, array)
 
+    ############################################################################
+    #                                identities                                #
+    ############################################################################
+
     @cached_property
     def _hash_key(self):
         return hash(
@@ -302,3 +293,129 @@ class _Crystal:
             and self.g_factors.tobytes() == other.g_factors.tobytes()
             and self.magnetic.tobytes() == other.magnetic.tobytes()
         )
+
+    def is_close(self, other, cell_rtol=1e-10, atol=1e-8) -> bool:
+        r"""
+        Tolerant comparison of two crystals.
+
+        Answers the question *Is it the same crystal?*.
+
+        Parameters
+        ----------
+        other : :py:class:`._Crystal`
+            Other crystal that will be compared.
+        cell_rtol : float, default 1e-10
+            Relative tolerance for cell.
+        atol : float, default 1e-8
+            Absolute tolerance for positions, spins and g-factors
+
+        Returns
+        -------
+        result : bool
+            ``True`` if two crystals appear to be the same within tolerance.
+            ``False`` if not.
+
+        Notes
+        -----
+        See :py:meth:`.diff` for the details on how exactly the comparison is made.
+
+        ``__eq__`` and ``__hash__`` are exact (bitwise). ``is_close`` is a tolerant
+        comparison. ``__eq__`` answers *is this the same value?*, ``is_close`` answers
+        *is this the same material?*.
+
+        Two crystals describing the same material, built through different routes, may
+        differ in their float-valued attributes due to rounding errors (with no physical
+        significance), therefore ``__eq__`` compares them unequal. ``is_close`` is
+        introduced to handle that case.
+
+        ``is_close`` cannot serve as ``__eq__``. Dictionaries and sets require equality
+        to be an equivalence relation, and a tolerant comparison is not one: three
+        crystals might satisfy ``a.is_close(b)`` and ``b.is_close(c)`` while ``a`` and
+        ``c`` are not close.
+
+        See Also
+        --------
+        diff
+        """
+
+        return self.diff(other=other, cell_rtol=cell_rtol, atol=atol) == ()
+
+    def diff(self, other, cell_rtol=1e-10, atol=1e-8) -> tuple:
+        r"""
+        Describes every field in which two crystals differ physically.
+
+        * ``cell`` -- relative only (``atol=0``). It is dimensioned and magnopy
+          does not know the units, so only relative agreement is meaningful.
+        * ``positions`` -- absolute, after wrapping the difference into
+          [-0.5, 0.5): fractional coordinates are periodic, so 0.999999... and
+          -1e-15 are the same site.
+        * ``spins``, ``g_factors`` -- absolute. Bounded quantities where zero is
+          a legal value, so a relative tolerance would be undefined there.
+        * ``names``, ``magnetic`` -- exact. ``is_close`` is tolerant about
+          floats, not about what the atoms are.
+
+        Parameters
+        ----------
+        other : :py:class:`._Crystal`
+            Other crystal that will be compared.
+        cell_rtol : float, default 1e-10
+            Relative tolerance for cell.
+        atol : float, default 1e-8
+            Absolute tolerance for positions, spins and g-factors
+
+        Returns
+        -------
+        report : tuple of str
+            A tuple with the messages about crystal differences.
+
+        See Also
+        --------
+        is_close
+        """
+
+        if not isinstance(other, _Crystal):
+            raise TypeError(
+                f"Cannot compare a crystal to non-crystal, got {type(other)}"
+            )
+
+        report = []
+
+        if len(self.names) != len(other.names):
+            return (
+                "Two crystals have different amount of atoms: "
+                f"{len(self.names)} and {len(other.names)}",
+            )
+
+        if not np.allclose(self.cell, other.cell, atol=0.0, rtol=cell_rtol):
+            worst = float(np.abs(self.cell - other.cell).max())
+            report.append(f"cell: differs by up to {worst:.3e} (absolute)")
+
+        if self.names != other.names:
+            for index, (mine, theirs) in enumerate(zip(self.names, other.names)):
+                if mine != theirs:
+                    report.append(f"names: atom {index} is {mine!r} vs {theirs!r}")
+                    break
+
+        if not np.array_equal(self.magnetic, other.magnetic):
+            mismatch = np.flatnonzero(self.magnetic != other.magnetic).tolist()
+            report.append(f"magnetic: differs at atoms {mismatch}")
+
+        for name in ("spins", "g_factors"):
+            mine, theirs = getattr(self, name), getattr(other, name)
+            if not np.allclose(mine, theirs, rtol=0.0, atol=atol):
+                index = int(np.abs(mine - theirs).argmax())
+                report.append(
+                    f"{name}: atom {index} is {mine[index]} vs {theirs[index]}"
+                )
+
+        delta = self.positions - other.positions
+        # Wrap the difference into [-0.5, 0.5)
+        delta -= np.round(delta)
+        if np.abs(delta).max() > atol:
+            index = int(np.abs(delta).max(axis=1).argmax())
+            report.append(
+                f"positions: atom {index} differs by "
+                f"{np.abs(delta[index]).max():.3e} (fractional)"
+            )
+
+        return tuple(report)
