@@ -729,3 +729,63 @@ def test_single_magnetic_atom():
     assert crystal.M == 1 and crystal.M_prime == 3
     np.testing.assert_equal(crystal.map_to_all, [2])
     np.testing.assert_equal(crystal.map_to_magnetic, [-1, -1, 0])
+
+
+################################################################################
+#                                   __repr__                                   #
+################################################################################
+
+
+def test_repr_is_a_single_line():
+    assert "\n" not in repr(make())
+
+
+def test_repr_does_not_dump_arrays():
+    crystal = make(
+        names=["Fe"] * 20,
+        positions=[[i / 20, 0.0, 0.0] for i in range(20)],
+        spins=[1.0] * 20,
+        g_factors=[2.0] * 20,
+        magnetic=[True] * 20,
+    )
+
+    assert len(repr(crystal)) < 100
+
+
+def test_repr_reports_atom_counts():
+    N = 9
+    M = 4
+    crystal = make(
+        names=["Fe"] * N,
+        positions=[[i / N, 0.0, 0.0] for i in range(N)],
+        spins=[1.0] * N,
+        g_factors=[2.0] * N,
+        magnetic=[True] * M + [False] * (N - M),
+    )
+    representation = repr(crystal)
+    assert "9 atoms" in representation
+    assert "4 magnetic" in representation
+
+
+def test_repr_reports_lattice_parameters():
+    # lengths only
+    crystal = make(cell=np.diag([3.0, 4.0, 12.0]))
+    representation = repr(crystal)
+    assert "3.0" in representation
+    assert "4.0" in representation
+    assert "1.20" in representation
+
+
+def test_repr_lattice_parameters_are_vector_lengths():
+    # and not a diagonal entries
+    crystal = make(cell=[[3.0, 4.0, 0.0], [0.0, 5.0, 0.0], [0.0, 0.0, 6.0]])
+    assert "5.00" in repr(crystal)
+
+
+def test_repr_distinguishes_different_crystals():
+    assert repr(make()) != repr(make(cell=2 * np.eye(3)))
+    assert repr(make()) != repr(make_with_ligand())
+
+
+def test_repr_names_the_class():
+    assert repr(make()).startswith("_Crystal")
