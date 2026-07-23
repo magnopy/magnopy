@@ -265,6 +265,120 @@ class _Crystal:
         )
 
     ############################################################################
+    #                                 subsets                                  #
+    ############################################################################
+
+    def select(self, indices):
+        r"""
+        A new crystal on the same cell and re-indexed atom set.
+
+        One primitive covers many atom-set transformations:
+
+        * ``crystal.select(crystal.magnetic)`` -- filter (:py:attr:`.magnetic_atoms`)
+        * ``crystal.select(np.tile(np.arange(N), L))`` -- tiling
+        * ``crystal.select(order)`` -- permutation
+
+        Indices may repeat and need not be sorted: the atoms of the result
+        appear in the given order.
+
+        Parameters
+        ----------
+        indices : (K,) |array-like|_ of bool or int or slice
+            A boolen mask of length :py:attr:`.M_prime` or an array of atom indices
+            (any, non-zero length) or a slice.
+
+
+        Returns
+        -------
+        new_crystal : :py:class:`._Crystal`
+            New crystal with ``K`` atoms, on the same :py:attr:`.cell`.
+
+        Raises
+        ------
+        TypeError
+            If ``indices`` is a scalar.
+        ValueError
+            If ``indices`` is a boolean mask whose length differs from
+            :py:attr:`.M_prime`.
+            If the resulting crystal fails validation (empty or with no magnetic atoms).
+        IndexError
+            If any index in ``indices`` is out of range.
+
+        See Also
+        --------
+        magnetic_atoms
+        """
+
+        # A slice is not array-like
+        if isinstance(indices, slice):
+            indices = np.arange(self.M_prime)[indices]
+
+        indices = np.asarray(indices)
+
+        if indices.ndim == 0:
+            raise TypeError(
+                "select(...) returns a sub-crystal on an index set, not a single atom."
+                f"Got a scalar index {indices.item()!r}; use [{indices.item()}] to "
+                "select one atom."
+            )
+
+        if indices.ndim > 1:
+            raise ValueError(
+                f"select(...) expects a 1D indices, got {indices.shape}. "
+                "Use indices.ravel() if you mean to flatten it."
+            )
+
+        if indices.dtype == bool:
+            # np.flatzero on a short mask might return a short indices array
+            # instead of raising
+            if indices.shape != (self.M_prime,):
+                raise ValueError(
+                    f"boolean indices must have shape ({self.M_prime},), got "
+                    f"{indices.shape}"
+                )
+
+            indices = np.flatnonzero(indices)
+
+        # Prevent empty indices (i. e. []) from raising type check
+        if indices.size == 0:
+            indices = indices.astype(int)
+
+        if indices.dtype.kind not in "iu":
+            raise ValueError(
+                f"select(...) expects an indices of bool or int, got {indices.dtype}."
+            )
+
+        # Out-of-range indices raise IndexError from the fancy-indexing below.
+        # Validation, freezing and -0.0 canonicalisation of the result all
+        # happen in __post_init__: there are no trusted callers.
+        return _Crystal(
+            cell=self.cell,
+            names=tuple(self.names[i] for i in indices),
+            positions=self.positions[indices],
+            spins=self.spins[indices],
+            g_factors=self.g_factors[indices],
+            magnetic=self.magnetic[indices],
+        )
+
+    @cached_property
+    def magnetic_atoms(self):
+        r"""
+        New instance of _Crystal with all non-magnetic atoms removed.
+
+        The order of mangetic atoms and the cell are preserved.
+
+        Returns
+        -------
+        new_crystal : :py:class:`._Crystal`
+
+        See Also
+        --------
+        select
+        """
+
+        return self.select(self.magnetic)
+
+    ############################################################################
     #                                identities                                #
     ############################################################################
 

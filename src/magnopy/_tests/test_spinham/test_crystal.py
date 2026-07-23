@@ -627,6 +627,121 @@ def test_diff_returns_a_tuple_of_strings():
 
 
 ################################################################################
+#                                   select()                                   #
+################################################################################
+
+
+def test_select_with_boolean_mask():
+    crystal = make_with_ligand()
+    subset = crystal.select(crystal.magnetic)
+    assert subset.names == ("Fe", "Fe")
+    np.testing.assert_equal(subset.spins, [2.5, 2.5])
+
+
+def tes_select_with_integer_array():
+    crystal = make_with_ligand()
+    subset = crystal.select(np.array([2, 0]))
+    assert subset.names == ("O", "Fe")
+    np.testing.assert_equa(subset.positions, crystal.positions[[2, 0]])
+
+
+def test_select_with_list_of_integers():
+    assert make_with_ligand().select([1, 2]).names == ("Fe", "O")
+
+
+def test_select_with_slice():
+    assert make_with_ligand().select(slice(0, 2)).names == ("Fe", "Fe")
+
+
+def test_select_reorders():
+    # index array is a permutation, not just a filter
+    crystal = make_with_ligand()
+    subset = crystal.select([2, 1, 0])
+    assert subset.names == ("O", "Fe", "Fe")
+    np.testing.assert_equal(subset.spins, [0.1, 2.5, 2.5])
+
+
+def test_select_can_repeat_indices():
+    crystal = make_with_ligand()
+    tiled = crystal.select([0, 2, 0, 2, 0, 2])
+    assert len(tiled) == 6
+    assert tiled.names == ("Fe", "O") * 3
+
+
+def test_select_identity_reproduces_the_crystal():
+    crystal = make()
+    assert crystal.select(np.arange(len(crystal))) == crystal
+
+
+def test_select_returns_a_crystal():
+    assert isinstance(make_with_ligand().select([0, 1]), _Crystal)
+
+
+def test_select_keeps_the_cell():
+    # Subset of atoms still leaves in the same cell.
+    # If the caller needs the supercell - its their job to construct one explicitly
+    crystal = make_with_ligand(cell=2 * np.eye(3))
+    np.testing.assert_equal(crystal.cell, crystal.select([0, 1]).cell)
+
+
+def test_select_carries_every_field():
+    crystal = make_with_ligand()
+    subset = crystal.select([2, 0])
+    for name in ("spins", "g_factors", "magnetic", "positions"):
+        subset_field = getattr(subset, name)
+        original_field = getattr(crystal, name)[[2, 0]]
+        np.testing.assert_equal(subset_field, original_field)
+
+
+def test_select_result_is_frozen():
+    subset = make_with_ligand().select([0, 1])
+    with pytest.raises(ValueError):
+        subset.positions[0] = 0
+
+
+def test_select_revalidates():
+    # Every construction shall go through __post__init__
+    # Selecting only the ligand leaves no magnetic atoms
+    with pytest.raises(ValueError, match="magnetic"):
+        make_with_ligand().select([2])
+
+
+def test_select_empty_rejected():
+    with pytest.raises(ValueError, match="empty"):
+        make_with_ligand().select([])
+
+
+def select_scalar_index_rejected():
+    # A scalar would invite for `for i in range(len(c)): c.select(i)`, which is
+    # not intended use of select.
+    with pytest.raises(TypeError):
+        make_with_ligand().select(0)
+
+
+def select_out_of_range_rejected():
+    with pytest.raises(IndexError):
+        make_with_ligand().select([0, 99])
+
+
+def test_select_boolean_mask_of_wrong_length_rejected():
+    # Its ok for indices, but not for a mask
+    with pytest.raises(ValueError):
+        make_with_ligand().select(np.array([True, False]))
+
+
+def test_crystal_is_not_a_sequence():
+    # __getitem__ was replaced by select precisely so that __len__ alone does
+    # not make Python treat a crystal as a sequence of atoms. Without this,
+    # iter(), list(), `in` and np.asarray() all fall back to crystal[0],
+    # crystal[1], ... and fail with an incomprehensible message.
+    crystal = make_with_ligand()
+    with pytest.raises(TypeError):
+        list(crystal)
+    with pytest.raises(TypeError):
+        crystal[0]
+
+
+################################################################################
 #                              Derived properties                              #
 ################################################################################
 
@@ -778,7 +893,7 @@ def test_repr_reports_lattice_parameters():
 
 def test_repr_lattice_parameters_are_vector_lengths():
     # and not a diagonal entries
-    crystal = make(cell=[[3.0, 4.0, 0.0], [0.0, 5.0, 0.0], [0.0, 0.0, 6.0]])
+    crystal = make(cell=[[3.0, 4.0, 0.0], [0.0, 7.0, 0.0], [0.0, 0.0, 8.0]])
     assert "5.00" in repr(crystal)
 
 
@@ -789,3 +904,46 @@ def test_repr_distinguishes_different_crystals():
 
 def test_repr_names_the_class():
     assert repr(make()).startswith("_Crystal")
+
+
+def test_magnetic_atoms_is_a_crystal():
+    assert isinstance(make_with_ligand().magnetic_atoms, _Crystal)
+
+
+def tets_magnetic_atoms_keeps_only_magnetic_ones():
+    subset = make_with_ligand().magnetic_atoms
+    assert subset.names == ("Fe", "Fe")
+    assert len(subset) == subset.M == 2
+    assert np.all(subset.magnetic)
+
+
+def test_magnetic_atoms_carries_the_right_values():
+    crystal = make_with_ligand()
+    subset = crystal.magnetic_atoms
+    np.testing.assert_equal(subset.spins, crystal.spins[crystal.map_to_all])
+    np.testing.assert_equal(subset.positions, crystal.positions[crystal.map_to_all])
+
+
+def test_magnetic_atoms_of_all_magnetic_crystal_is_itself():
+    crystal = make()
+    assert crystal == crystal.magnetic_atoms
+
+
+def test_magnetic_atoms_is_idempotent():
+    crystal = make_with_ligand()
+    assert crystal.magnetic_atoms.magnetic_atoms == crystal.magnetic_atoms
+
+
+def test_magnetic_atoms_are_all_magnetic():
+    subset = make_with_ligand().magnetic_atoms
+    assert subset.magnetic.all()
+
+
+def test_magnetic_atoms_is_cached():
+    crystal = make_with_ligand()
+    assert crystal.magnetic_atoms is crystal.magnetic_atoms
+
+
+def test_magnetic_atoms_agree_with_select():
+    crystal = make_with_ligand()
+    assert crystal.magnetic_atoms == crystal.select(crystal.map_to_all)
