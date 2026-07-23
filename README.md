@@ -10,6 +10,7 @@ Spin Hamiltonian, ground state, magnons.
 [![tests (main)](https://img.shields.io/github/actions/workflow/status/magnopy/magnopy/singular-test.yml?branch=main&label=tests%20(main))](https://github.com/magnopy/magnopy/actions/workflows/singular-test.yml?query=branch%3Amain)
 [![tests (dev)](https://img.shields.io/github/actions/workflow/status/magnopy/magnopy/singular-test.yml?branch=dev&label=tests%20(dev))](https://github.com/magnopy/magnopy/actions/workflows/singular-test.yml?query=branch%3Adev)
 
+
 ## What is Magnopy?
 
 Magnopy is a Python code that, given a
@@ -56,10 +57,10 @@ omega(R) = 1.8363 meV
 Reading from a file instead:
 
 ```python
-spinham = magnopy.io.load_tb2j("exchange.out", spin_values = [2.5, 2.5])
+spinham = magnopy.io.load_tb2j("exchange.out", spin_values=[2.5, 2.5])
 ```
 
-Or from the command line, no Python scripting required
+Or from the command line, no Python scripting required:
 
 ```console
 magnopy-lswt -ss TB2J -sf exchange.out -sv 2.5 2.5
