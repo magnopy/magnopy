@@ -47,6 +47,20 @@ def make(**overrides):
     return _Crystal(**kwargs)
 
 
+def make_with_ligand(**overrides):
+    # The ligand carries non-zero spin on purpose
+    kwargs = dict(
+        cell=np.eye(3),
+        names=["Fe", "Fe", "O"],
+        positions=[[0.0, 0.0, 0.0], [0.5, 0.5, 0.0], [0.5, 0.0, 0.5]],
+        spins=[2.5, 2.5, 0.1],
+        g_factors=[2.0, 2.0, 2.0],
+        magnetic=[True, True, False],
+    )
+    kwargs.update(overrides)
+    return _Crystal(**kwargs)
+
+
 FLOAT_ARRAY_FIELDS = ("cell", "positions", "spins", "g_factors")
 BOOL_ARRAY_FIELDS = ("magnetic",)
 ARRAY_FIELDS = FLOAT_ARRAY_FIELDS + BOOL_ARRAY_FIELDS
@@ -610,3 +624,108 @@ def test_diff_returns_a_tuple_of_strings():
     report = make().diff(c_3)
     assert isinstance(report, tuple)
     assert all(isinstance(line, str) for line in report)
+
+
+################################################################################
+#                              Derived properties                              #
+################################################################################
+
+
+def test_M_prie_counts_all_atoms():
+    assert make().M_prime == 2
+    assert make_with_ligand().M_prime == 3
+
+
+@pytest.mark.parametrize("func", (make, make_with_ligand))
+def test_len_is_M_prime(func):
+    crystal = func()
+    assert len(crystal) == crystal.M_prime
+
+
+def test_M_counts_magnetic_atoms():
+    assert make().M == 2
+    assert make_with_ligand().M == 2
+
+
+def test_M_ignores_spin_magnitude():
+    # A magnetic site with S=0 still counts;
+    # A non-magnetic site with S!=0 stil does not.
+    assert make(spins=[2.5, 0.0]).M == 2
+    assert make_with_ligand(magnetic=[True, False, False]).M == 1
+
+
+@pytest.mark.parametrize("name", ("map_to_all", "map_to_magnetic"))
+def test_maps_are_integer_array(name):
+    arr = getattr(make_with_ligand(), name)
+    assert isinstance(arr, np.ndarray)
+    assert arr.dtype.kind == "i"
+
+
+def test_map_to_all_lists_magnetic_atom_indices():
+    np.testing.assert_equal(make_with_ligand().map_to_all, [0, 1])
+    np.testing.assert_equal(make().map_to_all, [0, 1])
+
+
+def test_map_to_all_is_sorted():
+    crystal = make_with_ligand(magnetic=[False, True, True])
+    np.testing.assert_equal(crystal.map_to_all, [1, 2])
+
+
+@pytest.mark.parametrize("func", (make, make_with_ligand))
+def test_maps_has_correct_lengths(func):
+    crystal = func()
+    assert len(crystal.map_to_magnetic) == crystal.M_prime
+    assert len(crystal.map_to_all) == crystal.M
+
+
+def test_map_to_magnetic_gives_positions_among_magnetic():
+    np.testing.assert_equal(make_with_ligand().map_to_magnetic, [0, 1, -1])
+
+
+def test_map_to_magnetic_is_minus_one_for_non_magnetic():
+    np.testing.assert_equal(
+        make_with_ligand(magnetic=[False, True, False]).map_to_magnetic,
+        [-1, 0, -1],
+    )
+
+
+@pytest.mark.parametrize(
+    "func, overrides",
+    (
+        (make, {}),
+        (make_with_ligand, {}),
+        (make_with_ligand, {"magnetic": [False, True, True]}),
+    ),
+)
+def test_maps_are_mutual_inverses(func, overrides):
+    crystal = func(**overrides)
+    np.testing.assert_equal(
+        crystal.map_to_magnetic[crystal.map_to_all], np.arange(crystal.M)
+    )
+
+
+@pytest.mark.parametrize("name", ("map_to_all", "map_to_magnetic"))
+def test_maps_are_read_only(name):
+    arr = getattr(make_with_ligand(), name)
+    with pytest.raises(ValueError):
+        arr[0] = 0
+
+
+@pytest.mark.parametrize("name", ("map_to_all", "map_to_magnetic"))
+def test_maps_are_cached(name):
+    crystal = make_with_ligand()
+    assert getattr(crystal, name) is getattr(crystal, name)
+
+
+@pytest.mark.parametrize("name", ("map_to_all", "map_to_magnetic"))
+def test_all_magnetic_crystal_has_identity_maps(name):
+    # degenerate case, when all atoms are magnetic
+    crystal = make()
+    np.testing.assert_equal(getattr(crystal, name), np.arange(len(crystal)))
+
+
+def test_single_magnetic_atom():
+    crystal = make_with_ligand(magnetic=[False, False, True])
+    assert crystal.M == 1 and crystal.M_prime == 3
+    np.testing.assert_equal(crystal.map_to_all, [2])
+    np.testing.assert_equal(crystal.map_to_magnetic, [-1, -1, 0])

@@ -419,3 +419,73 @@ class _Crystal:
             )
 
         return tuple(report)
+
+    ############################################################################
+    #                             Derived properties                           #
+    ############################################################################
+    @cached_property
+    def M_prime(self) -> int:
+        r"""
+        Total amount of atoms in the crystal.
+
+        Returns
+        -------
+        M_prime : int
+        """
+
+        return len(self.names)
+
+    def __len__(self):
+        r"""Total amount of atoms, see M_prime."""
+        return self.M_prime
+
+    @cached_property
+    def M(self) -> int:
+        r"""
+        Amount of *magnetic* atoms in the crystal.
+
+        Returns
+        -------
+        M : int
+
+        Notes
+        -----
+        Atom ``i`` is magnetic if ``crystal.magnetic[i]`` is ``True``.
+        """
+
+        return int(np.count_nonzero(self.magnetic))
+
+    @cached_property
+    def map_to_all(self) -> np.ndarray:
+        r"""
+        Which atom is the i-th magnetic atom?
+
+        Returns
+        -------
+        map_to_all : :numpy:`ndarray` of int
+            Array of indices, such that ``map_to_all[i]`` is an index in atom of the
+            i-th magnetic atom.
+        """
+
+        result = np.flatnonzero(self.magnetic)
+        result.flags["WRITEABLE"] = False
+
+        return result
+
+    @cached_property
+    def map_to_magnetic(self) -> np.ndarray:
+        r"""
+        Which magnetic atom is the i-th atom?
+
+        Returns
+        -------
+        map_to_magnetic : :numpy:`ndarray` of int
+            Array of indices, such that ``map_to_magnetic[i]`` is an index of i-th
+            atom among the magnetic atoms. -1 if the atom is not magnetic.
+        """
+
+        result = np.full(self.M_prime, -1, dtype=int)
+        result[self.map_to_all] = np.arange(self.M)
+        result.flags["WRITEABLE"] = False
+
+        return result
