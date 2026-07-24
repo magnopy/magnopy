@@ -42,20 +42,62 @@ def _npn(nus, alphas) -> tuple:
         ``1 <= p_n <= p(n)`` where ``p(n)`` is the number of integer partitions of
         ``n``.
 
+    Raises
+    ------
+    ValueError
+       If the given ``nus, alphas`` describe a term with ``n >= 5`` or ``alphas`` is
+       empty.
+
     Notes
     -----
     A site is defined by the ``(nu, alpha)`` pair.
 
-    ``p_n`` indexes integer partitions of ``n`` in descending orger (when sorted
+    ``p_n`` indexes integer partitions of ``n`` in descending order (when sorted
     lexicographically).
 
-    Full definition of ``p_n`` is writted in the docs, see
+    Full definition of ``p_n`` is written in the docs, see
     :ref:`user-guide_theory-behind_spin-hamiltonian`.
 
     See Also
     --------
     get_npn
     """
+    n = len(alphas)
+
+    # optimization: n=2 are more frequent
+    if n == 2:
+        return 2, (1 if (nus[0] == (0, 0, 0) and alphas[0] == alphas[1]) else 2)
+
+    if n == 1:
+        return 1, 1
+
+    if n == 3:
+        return 3, len(
+            {
+                ((0, 0, 0), alphas[0]),
+                (nus[0], alphas[1]),
+                (nus[1], alphas[2]),
+            }
+        )
+
+    if n == 4:
+        sites = (
+            ((0, 0, 0), alphas[0]),
+            (nus[0], alphas[1]),
+            (nus[1], alphas[2]),
+            (nus[2], alphas[3]),
+        )
+        distinct = len({*sites})
+
+        if distinct == 1:
+            return 4, 1
+        if distinct == 3:
+            return 4, 4
+        if distinct == 4:
+            return 4, 5
+        return 4, (2 if sites.count(sites[0]) in (1, 3) else 3)
+
+    raise ValueError(f"Expected 1 <= n <= 4 spin operators, got n = {n}.")
 
 
 class _InteractionParameters:
