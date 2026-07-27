@@ -141,3 +141,281 @@ class _InteractionParameters:
     could produce one takes an explicit rule (for example ``on_duplicate``) for
     resolving it, so no repair step is needed.
     """
+
+    def __init__(self) -> None:
+        self._container = []
+
+    ############################################################################
+    #                                Bisecting                                 #
+    ############################################################################
+
+    def _index(self, nus, alphas) -> tuple:
+        r"""
+        Finds an index of the parameter in container.
+
+        Does not perform validation of the input types or shapes.
+
+        Derives ``specs`` via :py:func:`._npn`, then bisects.
+
+        Parameters
+        ----------
+        nus : (n - 1,) tuple of (3,) tuple of int
+            Unit cells of each site.
+        alphas : (n,) tuple of int
+            Index of each site.
+
+        Returns
+        -------
+        index : int
+            Position of the parameter in the container. If ``found`` is ``True``,
+            the parameter is stored as ``self._container[index]``.
+            If ``found`` is ``False``, ``index`` is the position at which it would
+            be inserted to keep the container sorted by ``specs`` (i.e.
+            ``self._container.insert(index, ...)`` preserves the order).
+            ``0 <= index <= len(self)``.
+        found : bool
+            ``True`` if a parameter with these canonical ``specs`` is present.
+            ``False`` otherwise.
+
+        """
+
+    def get_index(self, nus, alphas):
+        r"""
+        Finds an index of the parameter in container.
+
+        Parameters
+        ----------
+        nus : (n,) or (n-1,) iterable of (3,) iterable of int
+            Unit cells for each site.
+        alphas : (n,) iterable of int
+            Indices of sites within each unit cell. See notes of :py:meth:`.add` for
+            details.
+
+        Returns
+        -------
+        index : int
+            Position of the parameter in the container.
+
+        Raises
+        ------
+        ValueError
+            If there is no such item.
+        """
+        raise NotImplementedError
+
+    ############################################################################
+    #                         Single-parameter methods                         #
+    ############################################################################
+
+    def add(self, nus, alphas, parameter) -> None:
+        r"""
+        Adds a single parameter to the container.
+
+        Parameters
+        ----------
+        nus : (n,) or (n-1,) iterable of (3,) iterable of int
+            Unit cells for each site.
+        alphas : (n,) iterable of int
+            Indices of sites within unit cell. If ``len(nus) == len(alphas)``,
+            then no condition is enforced on ``nus[0]``, all ``nus`` are shifted so
+            ``nus[0] == (0,0,0)`` for storage. If ``len(nus) == len(alphas) - 1``, then
+            ``alphas[0]`` sits in ``(0,0,0)``, ``alphas[i]`` sits in ``nus[i-1]`` for
+            ``i >= 1``.
+        parameter : (3,)*n |array-like|_
+            Tensor of the interaction parameter. User input is copied, thus mutation
+            of the original array does not affect stored parameter.
+
+        Raises
+        ------
+        ValueError
+            If canonical ``specs`` generated from ``nus, alphas`` are already present
+            in the container.
+
+        See Also
+        --------
+        extend
+            For bulk additions.
+        set
+            For rewriting parameters.
+        """
+        raise NotImplementedError
+
+    def set(self, nus, alphas, parameter) -> None:
+        r"""
+        Sets a single parameter.
+
+        Adds if absent, rewrites if present.
+
+        Parameters
+        ----------
+        nus : (n,) or (n-1,) iterable of (3,) iterable of int
+            Unit cells for each site.
+        alphas : (n,) iterable of int
+            Indices of sites within each unit cell. See notes of :py:meth:`.add` for
+            details.
+        parameter : (3,)*n |array-like|_
+            Tensor of the interaction parameter. User's input is copied, thus mutation
+            of the original array does not affect stored parameter.
+
+        See Also
+        --------
+        add
+        extend
+            For bulk additions.
+        """
+        raise NotImplementedError
+
+    def remove(self, nus, alphas) -> bool:
+        r"""
+        Removes a single parameter from the container.
+
+        Parameters
+        ----------
+        nus : (n,) or (n-1,) iterable of (3,) iterable of int
+            Unit cells for each site.
+        alphas : (n,) iterable of int
+            Indices of sites within each unit cell. See notes of :py:meth:`.add` for
+            details.
+
+        Returns
+        -------
+        status : bool
+            ``True`` if parameter with such spec was present and is now removed.
+            ``False`` if the parameter with such specs was not present.
+        """
+        raise NotImplementedError
+
+    ############################################################################
+    #                         Many-parameters methods                          #
+    ############################################################################
+
+    def extend(self, items, on_duplicate="raise", on_existing="raise") -> None:
+        r"""
+        Extend the container with many parameters at once.
+
+        More efficient than :py:meth:`.add` on many parameters.
+
+        Parameters
+        ----------
+        items : iterable
+            Iterable of the interaction parameters of the form
+            ``[[nus, alphas, parameters], ...]`` (list is used for illustration).
+            See :py:meth:`.add` for description of the elements.
+        on_duplicate : str, default "raise"
+            What to do if ``items`` contains duplicate specs after canonilisation.
+            Case insensitive. Supported values are:
+
+            * "raise" (default). Raises ``ValueError``.
+            * "sum". Sums tensors for the parameters with the same specs.
+            * "mean". Computes arithmetic mean between tensors with the same specs.
+
+        on_existing : str, default "raise"
+            What to do if specs from ``items`` already present in the container.
+            Applied after ``on_duplicate`` is resolved. Case insensitive. Supported
+            values are:
+
+            * "raise" (default). Raises ``ValueError``.
+            * "sum". Sums the incoming tensor from ``items`` with the existing tensor
+              from the container.
+            * "replace". Replaces existing tensor in the container with the incoming
+              tensor from ``items``.
+
+        Raises
+        ------
+        ValueError
+            See ``on_duplicate`` and ``on_existing``.
+
+        See Also
+        --------
+        add
+        set
+        """
+        raise NotImplementedError
+
+    ############################################################################
+    #                                  Other                                   #
+    ############################################################################
+
+    def __len__(self) -> int:
+        r"""
+        Total amount of parameters in the container.
+        """
+        return len(self._container)
+
+    def __contains__(self, item) -> bool:
+        r"""
+        Checks if such parameter is in the container.
+
+        Parameters
+        ----------
+        item : tuple
+            ``item = (nus, alphas)``. See notes of :py:meth:`.add` for details.
+
+        Returns
+        -------
+        answer: bool
+            ``True`` if such parameter is present. ``False`` otherwise.
+        """
+        raise NotImplementedError
+
+    ############################################################################
+    #                          Arithmetic operations                           #
+    ############################################################################
+
+    def __add__(self, other):
+        r"""
+        Merge two containers, sums parameters with the same specs.
+        """
+        raise NotImplementedError
+
+    def __mul__(self, number):
+        r"""
+        Multiply all parameters by a number.
+
+        Parameters
+        ----------
+        number : int | float
+        """
+        raise NotImplementedError
+
+    def __rmul__(self, number):
+        r"""
+        Multiply all parameters by a number.
+
+        Parameters
+        ----------
+        number : int | float
+        """
+        return self.__mul__(number=number)
+
+    def __sub__(self, other):
+        r"""
+        Merge two containers, subtract parameters of ``other`` from parameters
+        of ``self`` with the same specs.
+        """
+        return self + (-1) * other
+
+    ############################################################################
+    #                                 Copying                                  #
+    ############################################################################
+
+    def __deepcopy__(self, memo):
+        r"""
+        Deep copy of the container.
+
+        memo unused, since the structure is acyclic. Left to satisfy the protocol.
+        """
+
+        return self.copy()
+
+    def copy(self):
+        r"""
+        Copy of the object (deep).
+
+        Returns
+        -------
+        copied_container : _InteractionParameters
+            Deep copy of the container.
+        """
+
+        raise NotImplementedError
