@@ -16,15 +16,15 @@ Energy
 By default Magnopy outputs energy in the units of "meV", but the user can ask for other
 supported units.
 
-======================== ======================
+======================== =======================
 Units                    Keywords
-======================== ======================
+======================== =======================
 Electronvolt (eV)        ``"eV"``
 Millielectronvolt (meV)  ``"meV"``
 Joule                    ``"Joule"``, ``"J"``
-Rydberg units of energy  ``"Ry"``, ``"Rydber"``
+Rydberg units of energy  ``"Ry"``, ``"Rydberg"``
 Erg                      ``"Erg"``
-======================== ======================
+======================== =======================
 
 
 .. dropdown:: Conversion factors
@@ -133,7 +133,7 @@ Hamiltonian's parameters
 ========================
 
 Interaction parameters of the :py:class:`.SpinHamiltonian` are typically stored in the
-units of energy (i.e meV or Joule) or some units that offer direct conversion to an energy
+units of energy (i.e. meV or Joule) or some units that offer direct conversion to an energy
 scale (like Kelvin, via Boltzmann constant). Use :py:attr:`.SpinHamiltonian.units` to
 check or change the units of the parameters.
 

@@ -5,13 +5,14 @@ How to cite?
 ************
 
 
-The research article about Magnopy code is in the process of submission and peer review.
-It will be published in the near future.
+The research article about the Magnopy code is in the process of submission and
+peer review.  It will be published in the near future.
 
-Meanwhile please cite the code by its name ("Magnopy") and mention this web-site
+Meanwhile please cite the code by its name ("Magnopy") and mention this website
 ("magnopy.org").
 
-For the method of linear spin-wave theory and Holstein-Primakoff representation cite
+For the method of linear spin-wave theory and Holstein-Primakoff representation
+cite
 
 .. code-block:: text
 
@@ -43,7 +44,7 @@ For the numerical diagonalization of the bosonic Hamiltonian please cite
 .. code-block:: text
 
     Colpa, J.H.P., 1978.
-    Diagonalization of the quadratic boson hamiltonian.
+    Diagonalization of the quadratic boson Hamiltonian.
     Physica A: Statistical Mechanics and its Applications, 93(3-4), pp.327-353.
 
 .. code-block:: LaTeX

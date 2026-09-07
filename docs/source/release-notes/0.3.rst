@@ -6,8 +6,9 @@ Version 0.3
 
 .. warning::
 
-    We recommend not to use this version of Magnopy due to :issue:`79`, that can affect
-    some (not all) calculations of spin wave spectra. Use 0.4.2 and later instead.
+    We recommend not to use this version of Magnopy due to :issue:`79` that can
+    affect some (not all) calculations of spin wave spectra. Use 0.4.2 and later
+    instead.
 
 0.3.0
 =====
@@ -20,7 +21,7 @@ New features
 * Refactor and expose to public :ref:`api_si` submodule that collects units of
   International system of units (SI) and physical constants that are expressed in SI.
 * :py:func:`.experimental.plot_dispersion`
-* Second scale with eigenfrequiencies in THz for "OMEGAS.png" and "DELTAS.png" plots of
+* Second scale with eigenfrequencies in THz for "OMEGAS.png" and "DELTAS.png" plots of
   :ref:`user-guide_cli_lswt`.
 
 Bugfix

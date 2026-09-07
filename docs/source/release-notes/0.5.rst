@@ -31,7 +31,7 @@ New features
 Bugfix
 ------
 
-* Fix a bug in :py:meth:`.SpinHamiltonian._get_missing_parameters`, that prevented
+* Fix a bug in :py:meth:`.SpinHamiltonian._get_missing_parameters` that prevented
   the method from working, when there are indeed missing parameters.
 * Fix a bug in :py:meth:`.SpinHamiltonian.purge`. The bug prevented modification of
   the Hamiltonian parameters if this method was used.
@@ -81,9 +81,9 @@ Bugfix
 0.5.0
 =====
 
-.. warning::
-    We recommend to update to 0.5.1 if you need to use :py:func:`.experimental.plot_spinham`.
-    This function was broken in 0.5.0 and fixed in 0.5.1.
+.. warning:: We recommend updating to 0.5.1 if you need to use
+   :py:func:`.experimental.plot_spinham`.  This function was broken in 0.5.0 and
+   fixed in 0.5.1.
 
 **Date**: 31 March 2026
 
@@ -143,12 +143,12 @@ Removed features
 Transition guide
 ================
 
-Version 0.5.0 introduces breaking changes in the magnopy's API. Those changes were
+Version 0.5.0 introduces breaking changes in Magnopy's API. Those changes were
 unavoidable, as we needed to fix more-than-three-spins terms of the Hamiltonian and
 introduce full and correct
 :ref:`form of the spin Hamiltonian <user-guide_theory-behind_spin-hamiltonian>`.
 
-This page is aimed to ease the transition to the 0.5.0 for the users of the previous
+This page aims to ease the transition to the 0.5.0 for the users of the previous
 versions. As always, if you have questions of how to modify your existing scripts, please
 contact us via :ref:`support`.
 

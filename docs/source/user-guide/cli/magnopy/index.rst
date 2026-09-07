@@ -4,20 +4,20 @@
 magnopy
 *******
 
-The CLI commang ``magnopy`` can display information about the package or run its test suite.
+The CLI command ``magnopy`` can display information about the package or run its test suite.
 
 Getting help
 ============
 
-We recommend to get the accurate and full list of script's parameters, that reflects
-installed version of Magnopy with the command
+We recommend getting the accurate and full list of the script's parameters that
+reflect the installed version of Magnopy with the command
 
 .. code-block::
 
     magnopy --help
 
 which outputs to the standard output channel (console or terminal) Magnopy's metadata and
-*full* list of script's arguments. Here is an example of this output
+*full* list of the script's arguments. Here is an example of this output
 
 .. hint::
 
@@ -68,7 +68,7 @@ To display Magnopy's logo along with the information about the package, use
 
    magnopy logo
 
-Which shall output something similar to
+which shall output something similar to
 
 .. literalinclude:: logo.inc
     :language: text

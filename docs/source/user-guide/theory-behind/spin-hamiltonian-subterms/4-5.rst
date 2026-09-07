@@ -13,7 +13,7 @@ with different sites. In this page we imply that
 
 .. math::
     C_{4, 5}
-    \sum_{\substack{\mu, \nu_2, \nu_3, \nu_4 \\ \alpha_1, \alpha_2, \alpha_3, \alpha_4 \\ i_1, i_2, i_3, i_4}}
+    \sum_{\substack{\mu, \nu_2, \nu_3, \nu_4, \\ \alpha_1, \alpha_2, \alpha_3, \alpha_4 \\ i_1, i_2, i_3, i_4}}
     J^{i_1, i_2, i_3, i_4}_{\nu_2,\nu_3,\nu_4; \alpha_1,\alpha_2,\alpha_3,\alpha_4}
     S_{\mu, \alpha_1}^{i_1}
     S_{\mu + \nu_2, \alpha_2}^{i_2}

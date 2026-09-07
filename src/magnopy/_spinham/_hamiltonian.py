@@ -131,7 +131,7 @@ class SpinHamiltonian:
     @property
     def cell(self):
         r"""
-        Cell of the crystal on which the Hamiltonian is build.
+        Cell of the crystal on which the Hamiltonian is built.
 
         See :ref:`user-guide_usage_cell` for more details.
 
@@ -508,7 +508,7 @@ class SpinHamiltonian:
 
         if not self.convention._multiple_counting:
             raise ValueError(
-                "When spinham.convention.multiple_counting is False, the distribution of parameters is fixed and can not be changed."
+                "When spinham.convention.multiple_counting is False, the distribution of parameters is fixed and cannot be changed."
             )
 
         new_parameters = _set_distribution(

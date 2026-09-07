@@ -6,17 +6,18 @@ Version 0.2
 
 .. warning::
 
-    We recommend not to use this version of Magnopy due to :issue:`79`, that can affect
-    some (not all) calculations of spin wave spectra. Use 0.4.2 and later instead.
+    We recommend not to use this version of Magnopy due to :issue:`79` that can
+    affect some (not all) calculations of spin wave spectra. Use 0.4.2 and later
+    instead.
 
 0.2.1
 =====
 .. warning::
 
-    We do not recommend to use :py:meth:`.Energy.optimize()` or :ref:`user-guide_cli_optimize-sd` of
-    this version of Magnopy.
+    We do not recommend using :py:meth:`.Energy.optimize()` or
+    :ref:`user-guide_cli_optimize-sd` of this version of Magnopy.
 
-**Date** : 10 September 2025
+**Date**: 10 September 2025
 
 Bugfix
 ------
@@ -59,7 +60,7 @@ New features
 * Output of "K-POINTS.html", "SPIN_VECTORS.txt", "HIGH-SYMMETRY_POINTS.txt",
   "K-POINTS.txt" and  "SPIN_DIRECTIONS.html" of the :ref:`user-guide_cli_lswt` script.
 * Implement :ref:`api_experimental` module, where experimental features of Magnopy will be
-  located. Those features might migrate to the core package in the future versions or be
+  located. Those features might migrate to the core package in future versions or be
   removed from it.
 * :py:func:`.experimental.plot_spinham`
 * :py:func:`.experimental.change_unit_cell`

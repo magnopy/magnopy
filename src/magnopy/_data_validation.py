@@ -47,7 +47,7 @@ def _validate_atom_index(index, atoms) -> None:
     if not 0 <= index < len(atoms["names"]):
         raise ValueError(
             "Index should be greater or equal to 0 and less than "
-            f"{len(atoms['names'])}', got {index}."
+            f"{len(atoms['names'])}, got {index}."
         )
 
 

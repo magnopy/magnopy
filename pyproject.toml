@@ -10,7 +10,7 @@ description = "Magnopy is a Python package for magnons."
 authors = [{ name = "Andrey Rybakov", email = "rybakov.ad@icloud.com" }]
 dependencies = ["numpy~=2.0", "wulfric~=0.7"]
 requires-python = ">=3.10"
-readme = "README.rst"
+readme = "README.md"
 license = "GPL-3.0-or-later"
 license-files = ["LICENSE"]
 classifiers = [

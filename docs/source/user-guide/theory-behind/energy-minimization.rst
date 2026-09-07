@@ -30,9 +30,9 @@ directions :math:`\boldsymbol{z}_{\alpha}, \alpha = 1, ..., M`
 
 	E = F(\boldsymbol{z}_{1}, ..., \boldsymbol{z}_{M})
 
-Directional vectors are unitary vectors and vary on the sphere. This fact introduces
+Directional vectors are unit vectors and vary on the sphere. This fact introduces
 complications in the minimization procedure as the optimization space is not a vector
-space and the typical (|BFGS|_, for instance) algorithms for linear optimizations can not
+space and the typical (|BFGS|_, for instance) algorithms for linear optimizations cannot
 be applied directly. This problem is elegantly solved via parametrization of directional
 vectors with the exponents of skew-symmetric matrices [2]_. Given an initial guess
 :math:`\boldsymbol{z}_{\alpha}^{(0)}`, any other set of directional vectors
@@ -147,7 +147,7 @@ Given :ref:`user-guide_theory-behind_energy-minimization_initial-guess`
         and compute gradient :math:`\boldsymbol{\nabla} F(\boldsymbol{x}_{k+1})`;
     #)  Set :math:`\boldsymbol{s}_k = \boldsymbol{x}_{k+1} - \boldsymbol{x}_k` and
         :math:`\boldsymbol{y}_k = \boldsymbol{\nabla} F(\boldsymbol{x}_{k+1}) - \boldsymbol{\nabla} F(\boldsymbol{x}_k)`;
-    #)  Update the hessian matrix :math:`\boldsymbol{H}_{k+1}` by the BFGS formula;
+    #)  Update the Hessian matrix :math:`\boldsymbol{H}_{k+1}` by the BFGS formula;
     #)  :math:`k \gets k + 1`.
 
 
@@ -163,7 +163,7 @@ Given :ref:`user-guide_theory-behind_energy-minimization_initial-guess`
 Initial guess
 =============
 
-Initial guess is provided by the user or randomly generated. User provides three
+Initial guess is provided by the user or randomly generated. The user provides three
 components of each directional vector :math:`(z_{\alpha}^x, z_{\alpha}^y, z_{\alpha}^z)`.
 
 .. _user-guide_theory-behind_energy-minimization_initial-hessian:
@@ -245,7 +245,7 @@ Line search algorithm:
 Given :math:`\boldsymbol{x}_k` and :math:`\boldsymbol{p}_k`
 
 1.  If :math:`\alpha = 1` satisfies strong Wolfe condition, then return :math:`1`.
-#.  Set :math:`\alpha_0 = 0`, :math:`\alpha_{\text{max}} = 2` and chose :math:`\alpha_1`
+#.  Set :math:`\alpha_0 = 0`, :math:`\alpha_{\text{max}} = 2` and choose :math:`\alpha_1`
     via :ref:`user-guide_theory-behind_energy-minimization_cubic-interpolation`;
 #.  :math:`i \gets 1`;
 #.  While maximum number of iterations is not achieved:

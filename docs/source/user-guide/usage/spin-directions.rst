@@ -5,12 +5,13 @@ Spin directions
 ***************
 
 Spin direction :math:`\boldsymbol{z}_1, ..., \boldsymbol{z}_M` is a rather simple data
-structure: a list of 3D unit vectors (|array-like|_). It is used to defined a state of the
+structure: a list of 3D unit vectors (|array-like|_). It is used to define a state of the
 Hamiltonian, for example its ground state.
 
-Number of unit vectors in the list must be equal to the number of the magnetic atoms in
-the unit cell of the spin Hamiltonian  (i. e. :py:attr:`.SpinHamiltonian.M`). Order of the
-unit vectors in the list must correspond to the order of the atoms in
+The number of unit vectors in the list must be equal to the number of the
+magnetic atoms in the unit cell of the spin Hamiltonian (i.e.
+:py:attr:`.SpinHamiltonian.M`). The order of the unit vectors in the list must
+correspond to the order of the atoms in
 :py:attr:`.SpinHamiltonian.magnetic_atoms`.
 
 * ``len(spin_directions) == spinham.M``
