@@ -14,8 +14,8 @@ All versions of Magnopy code that fit ``0.*`` are considered as beta stage of Ma
 lifecycle. This stage allows for more dynamic evolution of the code with frequent
 changes and supply of new features.
 
-Once the release ``v1.0.0`` is published the Magnopy will be considered stable and new,
-more restrictive deprecation police will be published.
+Once the release ``v1.0.0`` is published, Magnopy will be considered stable and new,
+more restrictive deprecation policy will be published.
 
 
 Deprecation policy
@@ -33,7 +33,7 @@ This first stage is optional for the beta stage of Magnopy's development.
     introduced.
 *   Shall issue a ``DeprecationWarning`` with
 
-    * Information on what user should use instead
+    * Information on what the user should use instead
     * Version in which it has been deprecated
 
 *   Shall not be introduced in the micro release. Can be introduced in major or minor
@@ -53,5 +53,5 @@ Stage 2: Removal
 New features
 ============
 
-*   Any new public feature both in python library and in command line interface have to
+*   Any new public feature both in the Python library and in command line interface has to
     have ``.. versionadded:: v<major>.<minor>.<micro>`` in its documentation.

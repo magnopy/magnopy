@@ -4,7 +4,7 @@
 magnopy.scenarios
 *****************
 
-Implementation of the command-line scripts, that is exposed to the API.
+Implementation of the command line scripts that are exposed to the API.
 
 .. currentmodule:: magnopy.scenarios
 

@@ -20,8 +20,8 @@
 
 .. hint::
 
-    We recommend to install Magnopy with optional dependencies (|plotly|_ and
-    |matplotlib|_) whether possible.
+    We recommend installing Magnopy with optional dependencies (|plotly|_ and
+    |matplotlib|_) wherever possible.
 
     .. code-block:: bash
 
@@ -30,13 +30,13 @@
     as then Magnopy produces graphical output (.html and .png files) in addition to the
     .txt files with the source data.
 
-    However, if you can not install either |plotly|_ or |matplotlib|_, then all functions
+    However, if you cannot install either |plotly|_ or |matplotlib|_, then all functions
     of Magnopy are still available. Visualization would be the only missing part.
 
 What is Magnopy?
 ================
 
-Magnopy is a python code that, given
+Magnopy is a Python code that, given
 :ref:`spin Hamiltonian<user-guide_theory-behind_spin-hamiltonian>` in **any**
 :ref:`convention <user-guide_theory-behind_convention>`, computes bosonic (magnon)
 Hamiltonian of the form
@@ -75,7 +75,7 @@ where
 *   :math:`E^{(0)}` is a classical energy of the vacuum state;
 *   :math:`E^{(2)}` is a part of the quantum correction to the energy of the vacuum state
     that arises at the level of linear spin wave theory (LSWT);
-*   :math:`\omega_{\alpha}(\boldsymbol{k})` is magnon dispersion relation derived at the
+*   :math:`\omega_{\alpha}(\boldsymbol{k})` is the magnon dispersion relation derived at the
     level of LSWT;
 
 In addition to the LSWT Hamiltonian, Magnopy is capable of computing full quantum
