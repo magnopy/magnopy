@@ -5,7 +5,7 @@ magnopy-optimize-sd
 *******************
 
 This scenario optimizes classical energy of the spin Hamiltonian and finds a set of spin
-directions that describes a local minima of the energy landscape. It implements an
+directions that describes a local minimum of the energy landscape. It implements an
 algorithm described in [1]_.
 
 Visit |tutorial-optimize-sd|_ for examples of input and output files.
@@ -15,8 +15,8 @@ Visit |tutorial-optimize-sd|_ for examples of input and output files.
 Getting help
 ============
 
-We recommend to get the accurate and full list of script's parameters, that reflects
-installed version of Magnopy with the command
+We recommend getting the accurate and full list of the script's parameters, that
+reflects the installed version of Magnopy with the command
 
 .. code-block::
 
@@ -52,7 +52,7 @@ E_0.txt
 
 .. versionadded:: 0.4.0
 
-A file with the value of classical energy of the optimize state. It contains a number and
+A file with the value of classical energy of the optimized state. It contains a number and
 unit string separated by a space symbol.
 
 INITIAL_GUESS.txt
@@ -68,7 +68,7 @@ other words, for each execution of the script).
 There are M lines in the file. M is a number of magnetic atoms in the spin Hamiltonian.
 Each line has three numbers on it, separated by at least one space symbol.
 
-First number is an x component, second - y, third - z of the spin direction vector.
+First number is the x component, second the y, third the z of the spin direction vector.
 
 SPIN_DIRECTIONS.txt
 -------------------

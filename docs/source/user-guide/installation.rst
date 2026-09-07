@@ -4,7 +4,7 @@
 How to install Magnopy
 **********************
 
-Requirement for Magnopy installation are
+Requirements for Magnopy installation are
 
 * |Python|_ (3.10 or higher)
 
@@ -19,9 +19,9 @@ Magnopy can be installed with :ref:`pip <user-guide_installation_pip>` or from
 Do you have Python?
 ===================
 
-Most likely Python is already installed on your machine (if not check
-|Python-installation|_). One of the ways to check if you have python installed is to
-run the command in your terminal
+Most likely Python is already installed on your machine (if not, check
+|Python-installation|_). One of the ways to check if you have Python installed
+is to run the command in your terminal
 
 .. code-block:: bash
 
@@ -37,17 +37,19 @@ If you see something like
 
 then you have it.
 
-In most cases ``python`` command launches python3, however if it launches python2, then
+In most cases ``python`` command launches Python 3, however if it launches Python 2, then
 you may need to use ``python3`` instead (and ``pip3`` instead of ``pip``).
 
 .. hint::
-    Use ``exit()`` or press ``ctrl+D`` to close python console.
+    Use ``exit()`` or press ``Ctrl+D`` to close Python console.
 
 .. _user-guide_installation_pip:
 
 .. hint::
-    On linux and OSX systems one can create a virtual environment for the Magnopy's installation with
-    (use your version of python instead of ``python3.13`` if needed)
+
+    On linux and macOS one can create a virtual environment for the Magnopy's
+    installation with (use your version of Python instead of ``python3.13`` if
+    needed)
 
     .. code-block:: bash
 
@@ -119,7 +121,7 @@ install |plotly|_ and |matplotlib|_ manually or install them as Magnopy's depend
 
         %pip install "magnopy[visual]"
 
-    within it. You may need to have to restart you kernel as well.
+    within it. You may need to restart you kernel as well.
 
 .. _user-guide_installation_source:
 
@@ -162,7 +164,7 @@ therefore Magnopy can be installed from source.
 Update
 ======
 
-New versions of Magnopy are often published. We recommend to update from time to time to
+New versions of Magnopy are often published. We recommend updating from time to time to
 get the new features and bug fixes.
 
 To update Magnopy to the latest available version (|version|) use the command (you may
