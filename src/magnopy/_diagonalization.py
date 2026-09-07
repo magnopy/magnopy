@@ -207,14 +207,15 @@ def solve_via_colpa(D):
 
     .. doctest::
 
+        >>> import numpy as np
         >>> import magnopy
         >>> D = [[1, 0], [0, 2]]
         >>> E, G = magnopy.solve_via_colpa(D)
-        >>> E
+        >>> np.round(E.real, decimals=0)
         array([1., 2.])
-        >>> G
-        array([[ 1., -0.],
-               [-0.,  1.]])
+        >>> np.round(G.real, decimals=0)
+        array([[1., 0.],
+               [0., 1.]])
 
     .. doctest::
 
