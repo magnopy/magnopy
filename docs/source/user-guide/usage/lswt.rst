@@ -18,7 +18,7 @@ the spin Hamiltonian are optimized for the calculations of the LSWT upon creatio
     >>> spinham = magnopy.examples.cubic_ferro_nn(S=5/2, J_iso=1, J_21=np.diag([2, -1, -2]))
     >>> lswt = magnopy.LSWT(spinham=spinham, spin_directions = [[0, 0, 1]])
 
-Once created, it can be used to access the properties of the LSWT Hamiltonian
+Once created, it can be used to access the properties of the LSWT Hamiltonian.
 
 .. doctest::
 
@@ -52,11 +52,11 @@ Coefficients before the one-operator terms (:py:meth:`.LSWT.O`)
     >>> lswt.O()
     array([0.+0.j])
 
-K-dependant properties
+K-dependent properties
 ======================
 
 Part of the spin Hamiltonian that depends on the wave vector :math:`\boldsymbol{k}`.
-They can be computed one by one
+It can be computed one by one
 
 .. doctest::
 
@@ -70,5 +70,5 @@ or all at once
     >>> omega, delta, G = lswt.diagonalize(k = [0.5, 0, 0])
 
 Note that call of :py:meth:`.LSWT.omega`, :py:meth:`.LSWT.delta` or :py:meth:`.LSWT.G`
-invokes the call of :py:meth:`.LSWT.diagonalize`. Therefore, we recommend to use
+invokes the call of :py:meth:`.LSWT.diagonalize`. Therefore, we recommend using
 :py:meth:`.LSWT.diagonalize` to avoid duplicate calculations.

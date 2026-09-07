@@ -70,7 +70,7 @@ Modifying convention
 ====================
 
 Every instance of the convention class is meant to be static, therefore, the properties of
-the existing instance can not be changed, for example
+the existing instance cannot be changed for example
 
 .. doctest::
 
@@ -79,7 +79,7 @@ the existing instance can not be changed, for example
     ...
     AttributeError: It is intentionally forbidden to set properties of convention. Use convention.get_modified(...) and/or spinham.convention = spinham.convention.get_modified(...)
 
-Thus, Magnopy forces you to create a new instance of the convention class, even if you
+Thus Magnopy forces you to create a new instance of the convention class, even if you
 need to change only one property of the convention.
 
 For example, if you would like to change the value of :math:`C_{2,1}` from 1.0 to -1.0,
@@ -114,7 +114,7 @@ The resulting conventions are the same
 Comparing conventions
 =====================
 
-As you noticed, two instance of the :py:class:`.Convention` class can be compared for
+As you noticed, two instances of the :py:class:`.Convention` class can be compared for
 equality
 
 .. doctest::

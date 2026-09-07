@@ -11,7 +11,7 @@ different sites. In this page we imply that :math:`\boldsymbol{r}_{\mu,\alpha_1}
 
 .. math::
     C_{3, 3}
-    \sum_{\substack{\mu, \nu_2, \nu_3 \\ \alpha_1, \alpha_2, \alpha_3 \\ i_1, i_2, i_3}}
+    \sum_{\substack{\mu, \nu_2, \nu_3, \\ \alpha_1, \alpha_2, \alpha_3 \\ i_1, i_2, i_3}}
     J^{i_1, i_2, i_3}_{\nu_2,\nu_3; \alpha_1,\alpha_2,\alpha_3}
     S_{\mu, \alpha_1}^{i_1}
     S_{\mu + \nu_2, \alpha_2}^{i_2}

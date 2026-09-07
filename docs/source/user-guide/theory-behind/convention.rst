@@ -4,7 +4,7 @@
 Convention of the Hamiltonian
 *****************************
 
-The convention of the Hamiltonian, i. e. the question of how the Hamiltonian is written,
+The convention of the Hamiltonian, i.e. the question of how the Hamiltonian is written,
 is very important as the values of the interaction parameters of the Hamiltonian can be
 different in different conventions.
 
@@ -18,10 +18,10 @@ Magnopy does all the grunt work of converting between different conventions when
 necessary.
 
 .. hint::
-    If the Hamiltonian is read from the know source (such as |TB2J|_, |GROGU|_), the
+    If the Hamiltonian is read from a known source (such as |TB2J|_, |GROGU|_), the
     convention is known and set automatically.
 
-Before reading about convention we recommend to take a look at how the Hamiltonian is
+Before reading about convention we recommend taking a look at how the Hamiltonian is
 written: :ref:`user-guide_theory-behind_spin-hamiltonian`.
 
 Constants before the sum
@@ -33,7 +33,7 @@ Constants before the sum
 First property that defines the convention of the Hamiltonian is the set of constants
 being written before the summation sign (the popular choices for bilinear term are
 :math:`\pm 1` or :math:`\pm \frac{1}{2}`). We expect the user to define either all or some
-of eleven constants placed in front of the summation sign for different types of
+of the eleven constants placed in front of the summation sign for different types of
 Hamiltonian's terms
 
 .. math::
@@ -130,13 +130,13 @@ Hamiltonian and not the individual values of each of them (see also
 
 The generalization of this property for the other terms (with 3 and more components of
 spin operators) is not as straightforward as one would expect and is linked with the
-:ref:`sets of equivalent parameters <user-guide_theory-behind_equivalent-parameters>`.For
+:ref:`sets of equivalent parameters <user-guide_theory-behind_equivalent-parameters>`. For
 terms with more than two spin operators, the equivalent sets can include more than two
 parameters.
 
 *   If by convention the multiple counting is allowed (``multiple_counting = True``)
 
-    The Hamiltonian includes all the parameters from the equivalent set and user is
+    The Hamiltonian includes all the parameters from the equivalent set and the user is
     expected to manually input each of them.
 
 *   If by convention the multiple counting is not allowed (``multiple_counting = False``)

@@ -4,7 +4,7 @@
 (4, 4) terms
 ************
 
-Forth type of quadlinear terms, in which two of the four spin operators are associated
+Fourth type of quadlinear terms, in which two of the four spin operators are associated
 with the first site, one spin operator is associated with the second site and one spin
 operator is associated with the third site. In this page we imply that
 :math:`\boldsymbol{r}_{\mu,\alpha_1}`,

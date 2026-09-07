@@ -5,7 +5,7 @@ Overview
 ********
 
 Almost every calculation with Magnopy begins with the creation of a
-:py:class:`magnopy.SpinHamiltonian` object, that handles a
+:py:class:`magnopy.SpinHamiltonian` object that handles a
 :ref:`user-guide_theory-behind_spin-hamiltonian`.
 
 This object is created from three other objects
@@ -21,8 +21,8 @@ When those three objects are created, then
 
 Once an instance of :py:class:`magnopy.SpinHamiltonian` exists, then
 you can add (:py:meth:`magnopy.SpinHamiltonian.add`) or remove
-(:py:meth:`magnopy.SpinHamiltonian.remove`) an interaction parameters. As well as do many
-other things that are present in :ref:`api` page.
+(:py:meth:`magnopy.SpinHamiltonian.remove`) an interaction parameter, as well as do many
+other things that are present in the :ref:`api` page.
 
 Then, from the spin Hamiltonian with some parameters, you can create an instance of
 the :py:class:`magnopy.Energy` class to compute the energy of the system in any

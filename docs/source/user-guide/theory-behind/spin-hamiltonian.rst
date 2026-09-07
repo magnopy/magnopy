@@ -4,14 +4,14 @@
 Spin Hamiltonian
 ****************
 
-The basic theory behind Magnopy is describe in |paper-2026|_. This page is intended to
+The basic theory behind Magnopy is described in |paper-2026|_. This page is intended to
 serve as a bridge between the paper and the code, by introducing the details of the
-formalism and explaining an the concepts that are less evident in the paper, but important
+formalism and explaining the concepts that are less evident in the paper, but important
 for the code.
 
-In |paper-2026|_ we discuss the spin Hamiltonian with arbitrary amount :math:`n` of
+In |paper-2026|_ we discuss the spin Hamiltonian with arbitrary number :math:`n` of
 coupled components of spin angular momentum operator. However, at present time only the
-terms with at most four coupled components of spin angular momentum operator (i. e.
+terms with at most four coupled components of spin angular momentum operator (i.e.
 :math:`n \le 4`) are implemented in Magnopy. The Hamiltonian then can be written as
 
 .. math::
@@ -137,7 +137,7 @@ where the sum over :math:`n` is expanded.
             +
             \alpha_m^3 \cdot \boldsymbol{a}_3
 
-        However, on contrary to the unit cell indices the floating point numbers are ill
+        However, in contrast to the unit cell indices the floating point numbers are ill
         suited for being indices, thus in Magnopy we store indices alpha as integers
         ranging from :math:`0` to :math:`M-1`, where M is the amount of magnetic sites in
         the unit cell, for example
@@ -168,7 +168,7 @@ the terms with the same amount of spin operators (same :math:`n`) but different 
 of **unique** magnetic sites.
 
 This distinction is implicit in the code, in particular you will always see an extra
-index, that we label as :math:`p_n`, that goes in pare with the index :math:`n` in this
+index, that we label as :math:`p_n`, that goes in pair with the index :math:`n` in this
 documentation and in the names of some methods implemented in Magnopy.
 
 For the linear, bilinear and trilinear terms of the Hamiltonian the extra index :math:`p_n`
@@ -192,7 +192,7 @@ There are several strategies for labeling such cases, in Magnopy we do the follo
   amount of partitions of :math:`n`.
 
 This strategy has an advantage: for :math:`n < 4` the extra index :math:`p_n` still
-indicates the amount of unique magnetic sites. The table below summarize the labeling
+indicates the amount of unique magnetic sites. The table below summarizes the labeling
 rules that are used in Magnopy. See linked pages for the details of the terms of the
 Hamiltonian for each case.
 
@@ -330,7 +330,7 @@ Isotropic biquadratic exchange interaction can be written as
 This Hamiltonian can be written in the form of :ref:`ug_tb_sh_4-3` if one defines
 :math:`C_{4,3} = 1` and
 :math:`J^{i_1,i_2,i_3,i_4}_{0,\nu_2,\nu_2;\alpha_1, \alpha_1, \alpha_2, \alpha_2} = J_{\nu_2;\alpha_1,\alpha_2}`
-when :math:`(i_1,i_2,i_3,i_4) = (xxxx), (xyxy), (xzxz), (yxyx), (yyyy), (yzyz), (zxzx), (zyzy), (yyyy)`
+when :math:`(i_1,i_2,i_3,i_4) = (xxxx), (xyxy), (xzxz), (yxyx), (yyyy), (yzyz), (zxzx), (zyzy), (zzzz)`
 and
 :math:`J^{i_1,i_2,i_3,i_4}_{0,\nu_2,\nu_2;\alpha_1, \alpha_1, \alpha_2, \alpha_2} = 0`
 otherwise.
