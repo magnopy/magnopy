@@ -58,17 +58,17 @@ Magnopy's user guide
 Installation
 ============
 
-Magnopy is a python library that is distributed via |PYPI|_ and can be installed as any
-other python library.
+Magnopy is a Python library that is distributed via |PYPI|_ and can be installed
+as any other Python library.
 
 :doc:`installation`
-    Details on how install Magnopy with ``pip`` or from source code.
+    Details on how to install Magnopy with ``pip`` or from source code.
 
 Theory behind
 =============
 
-As with any tool, it is important to understand how Magnopy operates and what can it do.
-In addition to the |paper-2026|_ that describes the method in details, we prepared a few
+As with any tool, it is important to understand how Magnopy operates and what it can do.
+In addition to the |paper-2026|_ that describes the method in detail, we prepared a few
 pages with brief summaries of the key concepts needed to understand the code.
 
 :doc:`theory-behind/spin-hamiltonian`
@@ -85,11 +85,11 @@ pages with brief summaries of the key concepts needed to understand the code.
 Magnopy as a Python library
 ===========================
 
-The first way to use magnopy is to use it within python scripts.
+The first way to use Magnopy is to use it within Python scripts.
 
-For deeper understanding of Magnopy you can read the page from above, that graphically
-summarizes data structures of Magnopy. Then you can read materials below where we explain
-each concept and give code examples.
+For deeper understanding of Magnopy you can read the overview that graphically
+summarizes data structures of Magnopy. Then you can read materials below where
+we explain each concept and give code examples.
 
 :doc:`usage/overview`
     An overview of the core objects in Magnopy. A good place to start.
@@ -130,7 +130,7 @@ Magnopy as a black box
 
 The second way to use Magnopy is via a command line interface.
 
-There are a number of scripts that takes some files as an input and produce some other
+There are a number of scripts that take some files as input and produce some other
 files as an output. You can use those scripts without any knowledge of python, but you
 will need to run a command in a terminal.
 
@@ -143,7 +143,7 @@ Below is the list of the scripts that are available in Magnopy today.
     Interface for stats about the package and tests of the package.
 
 :doc:`cli/magnopy-optimize-sd/index`
-    A script that minimization of classical energy with respect to spin directions.
+    A script that performs the minimization of classical energy with respect to spin directions.
 
 :doc:`cli/magnopy-lswt/index`
     A script that computes all terms of the magnon Hamiltonian at the level of linear
@@ -158,7 +158,7 @@ How-to guides
 
 How to guides are a collection of small code examples that demonstrate how to achieve
 a small task with Magnopy. They are less verbose than the tutorials (|magnopy-tutorials|_)
-and assume that your can read the materials from the
+and assume that you can read the materials from the
 :ref:`user-guide_magnopy-as-a-python-library` and :ref:`api` for details.
 
 :doc:`how-to/index`

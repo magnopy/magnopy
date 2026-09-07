@@ -4,8 +4,8 @@
 Theory notes
 ************
 
-In this page we write some formulas that did not make it neither to the publication
-about Magnopy nor to the user guide, but should be listed somewhere for the convenience
+In this page we write some formulas that did not make it either to the publication
+about Magnopy or to the user guide, but should be listed somewhere for the convenience
 of the developers.
 
 
@@ -13,7 +13,7 @@ Classical energy
 ================
 
 The formulas for the classical energy are written for the case of non-normalized spins,
-all other convention properties being arbitrary.
+all other properties of the convention being arbitrary.
 
 .. math::
     E^{(0)}

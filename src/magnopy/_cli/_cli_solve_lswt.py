@@ -113,7 +113,7 @@ def manager():
                     line = line.split()
                     if len(line) != 3:
                         raise ValueError(
-                            f"Expected three numbers per line (in line{i}),"
+                            f"Expected three numbers per line (in line {i}),"
                             f"got: {len(line)}."
                         )
 

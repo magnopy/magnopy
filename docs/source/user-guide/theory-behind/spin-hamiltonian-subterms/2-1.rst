@@ -1,8 +1,8 @@
 .. _ug_tb_sh_2-1:
 
-*************
-(2,  1) terms
-*************
+************
+(2, 1) terms
+************
 
 First type of the bilinear terms, in which both spin operators are associated with the
 same site.

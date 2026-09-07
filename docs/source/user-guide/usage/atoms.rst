@@ -21,7 +21,7 @@ Atoms/Sites
     decide how to interpret an "atom" in their particular model.
 
 
-Atoms are stored as a plain python dictionary. Keys of the ``atoms`` are plural and
+Atoms are stored as a plain Python dictionary. Keys of the ``atoms`` are plural and
 describe what kind of information is stored in the corresponding value. Values are lists
 of the same length :math:`M^{\prime}`.
 
@@ -97,8 +97,8 @@ We specify keys of the ``atoms`` dictionary that are expected by Magnopy in the 
 of the relevant functions and classes.
 
 .. hint::
-    the ``atoms`` dictionary is defined in the same way as in |wulfric|_. Magnopy does not
-    define any helper functions to manipulate with the atoms, as it is out of the scope of
+    The ``atoms`` dictionary is defined in the same way as in |wulfric|_. Magnopy does not
+    define any helper functions to manipulate the atoms, as it is out of the scope of
     this package. Instead we depend on |wulfric|_ for all manipulations with atoms.
 
 
@@ -128,7 +128,7 @@ Expected keys
 
 .. hint::
 
-    The dictionary structure of ``atoms`` allows to add any other property simply by
+    The dictionary structure of ``atoms`` allows adding any other property simply by
     adding a new key and a corresponding list of values to the ``atoms`` dictionary. This
     addition would not break anything in Magnopy.
 
@@ -136,7 +136,7 @@ Magnetic vs non-magnetic atoms
 ==============================
 
 By itself the dictionary ``atoms`` does not differentiate between magnetic and
-non-magnetic atoms. The concept of magnetic and non-magnetic appear only when ``atoms``
+non-magnetic atoms. The concept of magnetic and non-magnetic appears only when ``atoms``
 are used to create a :py:class:`.SpinHamiltonian` object. The magnetic atoms are defined
 as *atoms that have at least one interaction parameter associated with them (even if the
 value of the interaction parameter is zero)*.
@@ -147,4 +147,4 @@ More details are given in the
 .. note::
     In the example above one might be tempted to say that "Cr1" and "Cr2" are magnetic
     atoms, while "Br1", "Br2", "S1", and "S2" are non-magnetic based on the values of the
-    "spins" key.  However, this is **not** how the magnetic atoms are defined in Magnopy.
+    "spins" key. However, this is **not** how the magnetic atoms are defined in Magnopy.

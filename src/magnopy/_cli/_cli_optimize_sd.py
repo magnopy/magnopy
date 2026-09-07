@@ -48,7 +48,7 @@ def manager():
     parser = ArgumentParser(
         description=logo(logo_width=80)
         + "\n\nThis script optimizes classical energy of the spin Hamiltonian and "
-        "finds spin directions that define a local minima of the energy landscape.",
+        "finds spin directions that define a local minimum of the energy landscape.",
         formatter_class=RawDescriptionHelpFormatter,
     )
 

@@ -4,11 +4,11 @@
 Documentation
 *************
 
-The documentation of Magnopy is build with |sphinx|_.
+The documentation of Magnopy is built with |sphinx|_.
 
 The best way to get a feeling about how the documentation of Magnopy is structured is
-to read the source code in the "docs/source/" directory and compare it's content and
-structure with this webpage. If you have any doubts we encourage you to
+to read the source code in the "docs/source/" directory and compare its content and
+structure with this webpage. If you have any doubts, we encourage you to
 :ref:`contact us <support>`.
 
 Building the documentation
@@ -29,7 +29,7 @@ Alternatively, you can use the command
 Documentation structure
 =======================
 
-Documentation of Magnopy has two main parts
+The documentation of Magnopy has two main parts
 
 * User guide ("docs/source/user-guide/" directory)
 
@@ -38,7 +38,7 @@ Documentation of Magnopy has two main parts
 
 * API ("docs/source/api/" directory)
 
-  Semi-automatically generated documentation of the source code, it is mostly build
+  Semi-automatically generated documentation of the source code, it is mostly built
   based on the docstrings of the source code using |sphinx-autodoc|_ and
   |sphinx-autosummary|_.
 
@@ -52,7 +52,7 @@ among other things
 * "docs/source/index.rst" file
 
   The main page of the documentation. It includes the table of contents and the
-  introduction to the Magnopy.
+  introduction to Magnopy.
 
 * "docs/source/user-support/" directory
 
@@ -71,6 +71,6 @@ Docstrings
 ==========
 
 All public classes and functions have to have a docstring.
-The docstring has to be written in the |numpydoc|_ style guide.
+The docstring has to be written following the |numpydoc|_ style guide.
 
 To get a feeling about the style you can read examples in the source code of Magnopy.

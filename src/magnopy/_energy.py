@@ -185,7 +185,7 @@ class Energy:
         >>> energy = magnopy.Energy(spinham)
 
     Finally, ``energy`` can be used to compute classical energy of the Hamiltonian,
-    its gradient, torque or search for the local minima.
+    its gradient, torque or search for the local minimum.
 
     .. doctest::
 
@@ -326,7 +326,7 @@ class Energy:
 
         _normalize : bool, default True
             Whether to normalize the spin_directions or use the provided vectors as is.
-            This parameter is technical and we do not recommend to use it at all.
+            This parameter is technical and we do not recommend using it at all.
 
         Returns
         -------
@@ -586,7 +586,7 @@ class Energy:
 
         _normalize : bool, default True
             Whether to normalize the spin_directions or use the provided vectors as is.
-            This parameter is technical and we do not recommend to use it at all.
+            This parameter is technical and we do not recommend using it at all.
 
         quantum_correction : bool, default False
             Whether to include quantum correction to the energy in the optimization. If
@@ -676,7 +676,7 @@ class Energy:
 
         _normalize : bool, default True
             Whether to normalize the spin_directions or use the provided vectors as is.
-            This parameter is technical and we do not recommend to use it at all.
+            This parameter is technical and we do not recommend using it at all.
 
         quantum_correction : bool, default False
             Whether to include quantum correction to the energy in the optimization. If

@@ -4,11 +4,11 @@
 Cell
 ****
 
-Cell is a set of three vectors that defines a periodic lattice in real space.
+A cell is a set of three vectors that defines a periodic lattice in real space.
 
-Magnopy stores it in the same way as many python codes do (|spglib|_, |wulfric|_, ...).
+Magnopy stores it in the same way as many Python codes do (|spglib|_, |wulfric|_, ...).
 
-``cell`` is a two-dimensional :math:`3\times3` matrix (|array-like|_), that groups
+``cell`` is a two-dimensional :math:`3\times3` matrix (|array-like|_) that groups
 three lattice vectors as its rows. Here is an example of an orthorhombic cell
 
 .. doctest::
@@ -41,7 +41,7 @@ with the three lattice vectors being
 :py:attr:`.SpinHamiltonian.cell`.
 
 .. hint::
-    Magnopy does not define any helper functions to manipulate with the cell, as it is out
+    Magnopy does not define any helper functions to manipulate the cell, as it is out
     of the scope of this package. Instead we depend on |wulfric|_ for all manipulations
     with the cell. For example, to compute the matrix of the cell from six lattice
     parameters one can use :py:func:`wulfric.cell.from_params` function.

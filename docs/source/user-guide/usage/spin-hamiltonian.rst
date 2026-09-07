@@ -52,7 +52,7 @@ The cell and atoms of the Hamiltonian can be viewed at any time as
     >>> spinham.atoms
     {'names': ['Fe1', 'Fe2'], 'positions': [[0.0, 0.0, 0.0], [0.5, 0.5, 0.5]], 'spins': [2.5, 2.5], 'g_factors': [2, 2], 'spglib_types': [1, 1]}
 
-However, they can not be changed, to avoid inconsistencies later on
+However, they cannot be changed, to avoid inconsistencies later on
 
 .. doctest::
 
@@ -82,13 +82,13 @@ However, they can not be changed, to avoid inconsistencies later on
 Accessing the parameters
 ========================
 
-First of all, one need to be able to access the parameters of the Hamiltonian. The main
+First of all, one needs to be able to access the parameters of the Hamiltonian. The main
 method for that task is :py:meth:`.SpinHamiltonian.parameters`. It returns an iterator
 over the parameters of the Hamiltonian:
 
 .. doctest::
 
-    # For the explanation of nus, alphas, and parameter see next sections
+    >>> # For the explanation of nus, alphas, and parameter see next sections
     >>> for nus, alphas, parameter in spinham.parameters():
     ...     print(nus, alphas, parameter)
 
@@ -100,15 +100,15 @@ properties
 * atom ``alphas[0]`` is located in the ``(0, 0, 0)`` unit cell.
 * atom ``alphas[i]`` is located in the ``nus[i-1]`` unit cell for all ``1 <= i < n``
 
-``nus`` is a tuple of indices :math:`(\nu_2, ..., \nu_n)`, ``alphas`` is a tuple of
-indices :math:`(\alpha_1, ..., \alpha_n)`, ``parameter`` is the vector/matrix/tensor of
-the interaction parameter
-:math:`J^{i_1, ..., i_n}_{\nu_2, ..., \nu_n; \alpha_1, ..., \alpha_n}`, where ``n`` is the
-amount of spin operators involved in the term. More on the meaning of ``nus``, ``alphas``,
+``nus`` is a tuple of indices :math:`(\nu_2, ..., \nu_n)`, ``alphas`` is a tuple
+of indices :math:`(\alpha_1, ..., \alpha_n)`, ``parameter`` is the
+vector/matrix/tensor of the interaction parameter :math:`J^{i_1, ...,
+i_n}_{\nu_2, ..., \nu_n; \alpha_1, ..., \alpha_n}`, where ``n`` is the number of
+spin operators involved in the term. More on the meaning of ``nus``, ``alphas``,
 and ``parameter`` can be found in the next sections.
 
-:py:meth:`.SpinHamiltonian.parameters` can take two optional arguments ``n`` and ``p_n``
-that filter the parameters by eleven types as described in
+:py:meth:`.SpinHamiltonian.parameters` can take two optional arguments ``n`` and
+``p_n`` that filter the parameters by eleven types as described in
 :ref:`user-guide_theory-behind_spin-hamiltonian` page.
 
 *   ``n`` selects the number of spin operators in the term of the Hamiltonian.
@@ -388,7 +388,7 @@ Therefore, when the user provides ``nus`` with the length of ``n - 1``, Magnopy 
 However, when the user provides ``nus`` with the length of ``n``, Magnopy interprets
 ``nus`` as :math:`(\mu, \mu+\nu_2, ..., \mu+\nu_n)`. In this case the user is free
 to use any value for :math:`\mu`. Magnopy, will automatically shift all elements of
-``nus`` to enforce :math:`\mu = (0, 0, 0)` (i. e. ``nus[0] == (0, 0, 0)``).
+``nus`` to enforce :math:`\mu = (0, 0, 0)` (i.e. ``nus[0] == (0, 0, 0)``).
 
 Let us demonstrate the latter with an example. First, we create two copies of the spin
 Hamiltonian with no parameters in it
@@ -991,7 +991,7 @@ exchange interaction to the Hamiltonian to illustrate those.
 
     >>> spinham.add(nus=[(0,0,0)], alphas=[0,1], parameter = np.eye(3))
 
-Now the interactions parameter is an isotropic exchange with the value of 1 meV.
+Now the interaction parameter is an isotropic exchange with the value of 1 meV.
 
 .. doctest::
 
@@ -1199,7 +1199,7 @@ non-magnetic.
         >>> spinham.map_to_all
         [1]
 
-    Note that you can not convert the index of the "Fe1" atom in
+    Note that you cannot convert the index of the "Fe1" atom in
     :py:attr:`.SpinHamiltonian.atoms` to the index in
     :py:attr:`.SpinHamiltonian.magnetic_atoms` as atom "Fe1" is non-magnetic.
 
@@ -1210,7 +1210,7 @@ Magnetic field
 ==============
 
 Zeeman interaction can be added by hand using the :py:meth:`.SpinHamiltonian.add`, as
-it has the form of :ref:`ug_tb_sh_1-1`. However, we recommend to use pre-defined method
+it has the form of :ref:`ug_tb_sh_1-1`. However, we recommend using pre-defined method
 that does it automatically: :py:meth:`.SpinHamiltonian.set_magnetic_field`.
 
 Zeeman term in Magnopy is stored as part of the :py:attr:`.SpinHamiltonian.p1`
@@ -1341,7 +1341,7 @@ The latter is equivalent to
     Fe2   [0.         0.23153527 0.        ]
 
 Note that the method :py:meth:`.SpinHamiltonian.set_magnetic_field` is more powerful as it
-allows to control with which atoms the magnetic field is interacting, while the property
+allows controlling with which atoms the magnetic field is interacting, while the property
 :py:attr:`.SpinHamiltonian.magnetic_field` always adds Zeeman term only for the magnetic
 atoms.
 
@@ -1463,7 +1463,7 @@ Then, increase the magnetic field from 0 to 1 Tesla in steps of 0.1 Tesla
     ----------------------------------------
 
 The same can be achieved with :py:attr:`.SpinHamiltonian.magnetic_field` or
-:py:meth:`.SpinHamiltonian.set_magnetic_field` as well, see the dropdown below.
+:py:meth:`.SpinHamiltonian.set_magnetic_field`, see the dropdown below.
 
 .. dropdown:: Alternative styles
 
@@ -1524,8 +1524,10 @@ The same can be achieved with :py:attr:`.SpinHamiltonian.magnetic_field` or
         ----------------------------------------
 
     .. note::
-        Two following examples only work because both atoms are already magnetic. If they
-        are not, then one can promote them to be magnetic with, for example,
+
+        The following two examples only work because both atoms are already
+        magnetic. If they are not, then one can promote them to be magnetic
+        with, for example,
 
         .. doctest::
 

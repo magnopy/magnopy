@@ -4,7 +4,7 @@
 magnopy.io
 **********
 
-Input-output function of Magnopy.
+Input-output functions of Magnopy.
 
 .. currentmodule:: magnopy.io
 
@@ -28,7 +28,7 @@ GROGU
 =====
 
 .. autosummary::
-    :toctree: generated
+    :toctree: generated/
 
     load_grogu
 

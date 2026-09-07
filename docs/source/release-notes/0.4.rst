@@ -13,7 +13,7 @@ Improvements
 ------------
 
 * Make LSWT diagonalization more numerically stable. This should fix rare cases of
-  non-continues magnon spectra.
+  non-continuous magnon spectra.
 * Improve speed of the LSWT diagonalization (up to the factor x2).
 
 0.4.2
@@ -38,8 +38,9 @@ Improvements
 
 .. warning::
 
-    We recommend not to use this version of Magnopy due to :issue:`79`, that can affect
-    some (not all) calculations of spin wave spectra. Use 0.4.2 and later instead.
+    We recommend not to use this version of Magnopy due to :issue:`79` that can
+    affect some (not all) calculations of spin wave spectra. Use 0.4.2 and later
+    instead.
 
 **Date**: 3 November 2025
 
@@ -56,8 +57,9 @@ Bugfix
 
 .. warning::
 
-    We do not recommend to use :ref:`user-guide_cli_lswt` script with ``--k-points`` argument
-    of this version. There is a bug that was fixed in 0.4.1.
+    We do not recommend using :ref:`user-guide_cli_lswt` script with
+    ``--k-points`` argument of this version. There is a bug that was fixed in
+    0.4.1.
 
 New features
 ------------
@@ -108,7 +110,7 @@ Breaking changes wrt 0.3
 Deprecated features
 -------------------
 
-* :py:func:`.Convention.summary` use ``print(convention)`` or ``str(convention)`` instead.
+* :py:func:`.Convention.summary`, use ``print(convention)`` or ``str(convention)`` instead.
 * ``replace`` argument in :py:meth:`.SpinHamiltonian.add_1`,
   :py:meth:`.SpinHamiltonian.add_21`, :py:meth:`.SpinHamiltonian.add_22`,
   :py:meth:`.SpinHamiltonian.add_31`, :py:meth:`.SpinHamiltonian.add_32`,

@@ -44,8 +44,8 @@ commute, thus the Hamiltonian can be rewritten as
 You can see that the physics of the Hamiltonian is determined only by the sum
 :math:`J_{\nu_2; \alpha_1, \alpha_2}^{x,y} + J_{-\nu_2; \alpha_2, \alpha_1}^{y,x}`.
 Therefore, that sum can be distributed between the parameters arbitrarily. We call
-those two components of the parameters to be **equivalent**. More generally, a set of
-parameters is called to be a **set of equivalent parameters** (or an **equivalent set**)
+those two components of the parameters **equivalent**. More generally, a set of
+parameters is called a **set of equivalent parameters** (or an **equivalent set**)
 if the physics of the Hamiltonian is determined solely by the sum of the (components of
 the) parameters from that set.
 
@@ -57,7 +57,7 @@ In the case of the bilinear term, every equivalent set contains two parameters:
     \quad \text{and} \quad
     J_{-\nu_2; \alpha_2, \alpha_1}^{i_2, i_1}
 
-In the case of the other types of terms, the equivalent sets can contain more that two
+In the case of the other types of terms, the equivalent sets can contain more than two
 parameters. All equivalent sets are listed in the supplementary notes of the
 |paper-2026|_ (equations (S.21)—(S.27)).
 
@@ -81,7 +81,7 @@ The user is free to input non-symmetrized parameters to the
 it is necessary.
 
 .. note::
-    The symmetrization of the parameters **do not** place any restrictions on the
+    The symmetrization of the parameters **does not** place any restrictions on the
     components of the vector/matrix/tensor of each individual parameter. It only relates
     components of the vector/matrix/tensor of **different** parameters. For instance, it
     **does not** forbid an antisymmetric Dzyaloshinskii-Moriya interaction.

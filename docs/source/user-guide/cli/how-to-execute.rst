@@ -6,9 +6,9 @@ How to execute scripts?
 
 On this page we explain how the command-line interface of Magnopy works.
 
-A number of command-line scripts is defined in Magnopy. Name of every single one of them
-starts with ``magnopy-``. Examples on this page use ``magnopy-scenario`` as a placeholder
-for the script's name.
+A number of command-line scripts are defined in Magnopy. The name of every
+single one of them starts with ``magnopy-``. Examples on this page use
+``magnopy-scenario`` as a placeholder for the script's name.
 
 .. _user-guide_cli_common-notes_help:
 
@@ -84,7 +84,7 @@ that requires a single value. If you execute
 
 then "--input-file" is a keyword and "input.txt" is the value.
 
-Next, assume that a script expects an argument with the keyword ``--magnetic-fiel``, that
+Next, assume that a script expects an argument with the keyword ``--magnetic-field``, that
 requires three values. If you execute
 
 .. code-block:: bash
@@ -135,12 +135,13 @@ then a script will use ``True`` as a value for the argument with the keyword
 Long vs short keywords
 ======================
 
-Majority of arguments in Magnopy's scripts have two equivalent keywords: a long one and a
-short one. You are free to use either of them. The long version of the keyword starts with
-``--`` and the short version of the keyword starts with a single ``-``.
+The majority of arguments in Magnopy's scripts have two equivalent keywords: a
+long one and a short one. You are free to use either of them. The long version
+of the keyword starts with ``--`` and the short version of the keyword starts
+with a single ``-``.
 
 The purpose of having both long and short keywords is to provide descriptive keywords
-(i. e. "long" ones) and to allow experienced users an option of using the short ones.
+(i.e. "long" ones) and to allow experienced users an option of using the short ones.
 
 For example, assume that a set of arguments is defined for a script
 
@@ -248,7 +249,7 @@ Magnopy's logo and metadata.
     version, "3" minor version and "0" micro version;
 *   Release date;
 *   License;
-*   Link to the web-site with documentation;
+*   Link to the website with documentation;
 *   Copyright message;
 
 Line 26
@@ -289,7 +290,7 @@ lines 39-40 *   "-sv" is a short keyword of the argument.
                 means.
 lines 41-42 *   "-om" is a short keyword of the argument.
             *   "--optimization-mode" is a long keyword of the argument.
-            *   "{memory,speed}" is a placeholder for the values. Figure parenthesis
+            *   "{memory,speed}" is a placeholder for the values. Curly braces
                 indicate that one of the pre-defined values is expected. Use either
                 ``--optimization-mode memory`` or ``--optimization-mode speed``.
             *   "What kind of optimization shall be used." is a description of what this

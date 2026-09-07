@@ -6,7 +6,7 @@ Developer's guide
 
 If you're interested in seeing who has already contributed to this project, please visit
 our :ref:`Contributors page <development_contributors>`. We appreciate all contributions
-and look forward to see your name on that list.
+and look forward to seeing your name on that list.
 
 It is not necessary to be a programmer to contribute. You can help us with the
 :ref:`new features <user-support_feature>`, :ref:`finding bugs <user-support_bug>` or
@@ -40,8 +40,9 @@ Topical guides
 Development process
 ===================
 
-Here we summarize main steps for contributing code to Magnopy. We assume that you have an
-account on `<https://github.com>`_, and familiar with |Git|_.
+Here we summarize the main steps for contributing code to Magnopy. We assume
+that you have an account on `<https://github.com>`_, and are familiar with
+|Git|_.
 
 Fork and clone
 --------------
@@ -69,7 +70,7 @@ Fork and clone
 
         cd magnopy
 
-    Now you are in the root folder of you local repository
+    Now you are in the root folder of your local repository
     (:ref:`local <development_origin-upstream_local>`).
 
 *   Add the :ref:`upstream <development_origin-upstream>` repository to your
@@ -95,7 +96,7 @@ Fork and clone
 Set up the environment
 ----------------------
 
-We recommend to use virtual environment (with |venv|_, for example). Once the virtual
+We recommend using virtual environment (with |venv|_, for example). Once the virtual
 environment is created and activated, you can install the requirements
 
 *   Package dependencies
@@ -123,8 +124,8 @@ environment is created and activated, you can install the requirements
         pip install -r tests/requirements.txt
 
 .. note::
-    For the linux and OSX systems there is a scenario defined. It installs all
-    requirements. Note: it does not create a virtual environment for you
+    For the Linux and macOS systems there is a scenario defined. It installs all
+    requirements. It **does not** create a virtual environment for you
 
     .. code-block:: bash
 
@@ -154,8 +155,7 @@ add the fixed files to the staging area and commit again.
 Develop your contribution
 -------------------------
 
-*   Create a :ref:`dedicated branch <development_branches>` for your feature, that you are
-    going to develop
+*   Create a :ref:`dedicated branch <development_branches>` for your feature
 
     .. code-block:: bash
 

@@ -29,8 +29,8 @@ this page we imply that
         J^{i_1, i_2, i_3, i_4}_{\nu_2, 0, 0; \alpha_1, \alpha_2, \alpha_1, \alpha_1}
         S_{\mu, \alpha_1}^{i_1}
         S_{\mu + \nu_2, \alpha_2}^{i_2}
-        S_{\mu, \alpha_2}^{i_3}
-        S_{\mu, \alpha_2}^{i_4}
+        S_{\mu, \alpha_1}^{i_3}
+        S_{\mu, \alpha_1}^{i_4}
         +\\&+
         J^{i_1, i_2, i_3, i_4}_{\nu_2, \nu_2, \nu_2; \alpha_1, \alpha_2, \alpha_2, \alpha_2}
         S_{\mu, \alpha_1}^{i_1}

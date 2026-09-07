@@ -6,7 +6,7 @@ Origin and Upstream
 
 We use the terminology **Upstream** and **Origin** for the two remote repositories that
 are used in the development process. Relationships between them and the local repository
-with the most common command for communication between them is
+with the most common commands for communication between them are
 
 .. figure:: ../../images/origin-upstream-local.png
     :target: ../_images/origin-upstream-local.png
@@ -20,7 +20,7 @@ Origin repository
 
 **Origin** is a Magnopy repository under **your** personal account.
 
-During the development you push the changes to **Origin**. Once the feature you're working
+During development you push the changes to **Origin**. Once the feature you're working
 on is ready, you will create a pull request from **Origin** to **Upstream**.
 
 .. _development_origin-upstream_upstream:
@@ -28,10 +28,10 @@ on is ready, you will create a pull request from **Origin** to **Upstream**.
 Upstream repository
 ===================
 
-**Upstream** is a  main |repository|_, from which the release is made.
+**Upstream** is the main |repository|_, from which the release is made.
 
 You can pull changes from the **Upstream** to your local repository to keep it up to date
-and then push the changes to **Origin**. Alternatively, you can  *sync fork* using github
+and then push the changes to **Origin**. Alternatively, you can *sync fork* using GitHub
 web interface to keep your **Origin** up to date and then pull the change to your local
 repository from **Origin**.
 

@@ -4,7 +4,7 @@
 Template for release notes
 **************************
 
-Here you can find the guide for writing the release note.
+Here you can find the guide for writing the release notes.
 
 Overall, always include links to the issues that are relevant to the release.
 

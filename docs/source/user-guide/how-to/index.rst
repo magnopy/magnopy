@@ -4,4 +4,4 @@
 How to ... ?
 ************
 
-Coming soon
+Coming soon.

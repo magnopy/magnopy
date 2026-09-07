@@ -49,7 +49,7 @@ def optimize_sd(
 ) -> None:
     r"""
     Optimizes classical energy of spin Hamiltonian and finds a set of spin directions
-    that describes local minima of the energy landscape.
+    that describes local minimum of the energy landscape.
 
     Progress of calculation is shown in the standard output (``print()``). A bunch of the
     output files is created and saved on the disk inside the ``output_folder``.
@@ -232,7 +232,7 @@ def optimize_sd(
     with open(E_0_TXT, "w", encoding="utf-8") as f:
         f.write(f"{E_0:.8f} meV\n")
     print(
-        f"Classic energy of optimized state (E_0 = {E_0:.3f} meV) is saved in file\n{ICON_OUT_FILE} {E_0_TXT}"
+        f"Classical energy of optimized state (E_0 = {E_0:.3f} meV) is saved in file\n{ICON_OUT_FILE} {E_0_TXT}"
     )
 
     # Correction to classical energy
@@ -240,7 +240,7 @@ def optimize_sd(
     with open(E_CORR_TXT, "w", encoding="utf-8") as f:
         f.write(f"{E_corr:.8f} meV\n")
     print(
-        f"Correction to the classic energy of optimized state (E_corr = {E_corr:.3f} meV) is saved in file\n{ICON_OUT_FILE} {E_CORR_TXT}"
+        f"Correction to the classical energy of optimized state (E_corr = {E_corr:.3f} meV) is saved in file\n{ICON_OUT_FILE} {E_CORR_TXT}"
     )
 
     # Optimized spin directions

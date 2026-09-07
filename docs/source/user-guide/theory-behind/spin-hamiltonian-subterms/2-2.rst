@@ -1,8 +1,8 @@
 .. _ug_tb_sh_2-2:
 
-*************
-(2,  2) terms
-*************
+************
+(2, 2) terms
+************
 
 Second type of the bilinear terms, in which spin operators are associated with different
 sites. In other words, for these terms
