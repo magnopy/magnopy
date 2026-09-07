@@ -5,9 +5,9 @@ Version 0.1
 ***********
 
 .. warning::
-    We recommend to update from this version of Magnopy.
+    We recommend to updating from this version of Magnopy.
 
-    We do not recommend to use :py:meth:`.Energy.optimize` or :ref:`user-guide_cli_optimize-sd` of
+    We do not recommend using :py:meth:`.Energy.optimize` or :ref:`user-guide_cli_optimize-sd` of
     this version of Magnopy.
 
 
@@ -42,7 +42,7 @@ New features
 Bugfix
 ------
 
-* Fix bugs
+* Fix bugs.
 * Fix a bug of reading spin directions from a file.
 * Fix a bug in Energy with 43 parameters.
 
@@ -65,7 +65,7 @@ New features
 *   Implement summation (and subtraction) of spin Hamiltonians.
 *   Implement submodule with examples.
 *   Implement energy minimization algorithm.
-*   Implement creation of the supercell (warning: not tested)
+*   Implement creation of the supercell (warning: not tested).
 *   Implement ``__call__`` (equivalent to :py:attr:`.Energy.E_0`) for ``Energy`` class.
 
 Bugfix
@@ -166,6 +166,7 @@ Improvements
 
 Improvements
 ------------
+
 Change colors in the plots.
 
 0.1.1

@@ -23,7 +23,7 @@ Bugfix
 Improvements
 ------------
 
-* Implement :issue:`130`
+* Implement :issue:`130`.
 
 0.6.0
 =====
@@ -40,7 +40,8 @@ Bugfix
 ------
 
 * Rare bug with change of units and non-zero magnetic field: the units of
-  ``._zeeman_parameters`` were not converted, which can lead to complex undesired behavior.
+  ``._zeeman_parameters`` were not converted, which can lead to complex, undesired
+  behavior.
   This is now fixed, and the units of ``._zeeman_parameters`` are converted together with
   the units of ``._parameters`` when the units are changed using
   :py:meth:`.SpinHamiltonian.units`.
