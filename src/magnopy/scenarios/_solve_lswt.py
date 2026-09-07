@@ -287,7 +287,7 @@ def solve_lswt(
             "Supercell             : 1 x 1 x 1 (original unit cell of the Hamiltonian)"
         )
         print(
-            "\nNote: we recommend to obtain ground state outside of the magnopy-lswt program\n"
+            "\nNote: we recommend obtaining ground state outside of the magnopy-lswt program\n"
             "and provide --spin-directions argument to it. See magnopy-optimize-sd, for\n"
             "dedicated spin optimization of magnopy."
         )
@@ -359,7 +359,7 @@ def solve_lswt(
     with open(E_0_TXT, "w", encoding="utf-8") as f:
         f.write(f"{E_0:.8f} meV\n")
     print(
-        f"\nClassic energy of optimized state (E_0 = {E_0:.3f} meV) is saved in file\n{ICON_OUT_FILE} {E_0_TXT}"
+        f"\nClassical energy of optimized state (E_0 = {E_0:.3f} meV) is saved in file\n{ICON_OUT_FILE} {E_0_TXT}"
     )
 
     # Correction to classical energy
@@ -367,7 +367,7 @@ def solve_lswt(
     with open(E_CORR_TXT, "w", encoding="utf-8") as f:
         f.write(f"{E_corr:.8f} meV\n")
     print(
-        f"Correction to the classic energy of optimized state (E_corr = {E_corr:.3f} meV) is saved in file\n{ICON_OUT_FILE} {E_CORR_TXT}"
+        f"Correction to the classical energy of optimized state (E_corr = {E_corr:.3f} meV) is saved in file\n{ICON_OUT_FILE} {E_CORR_TXT}"
     )
 
     ################################################################################
@@ -517,7 +517,7 @@ def solve_lswt(
     with open(E_2_TXT, "w", encoding="utf-8") as f:
         f.write(f"{E_2:.8f} meV\n")
     print(
-        f"\nCorrection to the classic ground state energy (E_2 = {E_2:.3f} meV) is saved in file\n{ICON_OUT_FILE} {E_2_TXT}"
+        f"\nCorrection to the classical ground state energy (E_2 = {E_2:.3f} meV) is saved in file\n{ICON_OUT_FILE} {E_2_TXT}"
     )
 
     # One-operator coefficients
