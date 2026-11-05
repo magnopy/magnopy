@@ -35,25 +35,25 @@ def _npn(nus, alphas) -> tuple:
     Returns
     -------
     n : int
-        Number of spin operators associated with the interaction defined by ``nus`` and
-        ``alphas``.
+        Number of spin operators associated with the interaction defined by
+        ``nus`` and ``alphas``.
     p_n : int
         Partition class of the interaction defined by ``nus`` and ``alphas``.
-        ``1 <= p_n <= p(n)`` where ``p(n)`` is the number of integer partitions of
-        ``n``.
+        ``1 <= p_n <= p(n)`` where ``p(n)`` is the number of integer partitions
+        of ``n``.
 
     Raises
     ------
     ValueError
-       If the given ``nus, alphas`` describe a term with ``n >= 5`` or ``alphas`` is
-       empty.
+       If the given ``nus, alphas`` describe a term with ``n >= 5`` or
+       ``alphas`` is empty.
 
     Notes
     -----
     A site is defined by the ``(nu, alpha)`` pair.
 
-    ``p_n`` indexes integer partitions of ``n`` in descending order (when sorted
-    lexicographically).
+    ``p_n`` indexes integer partitions of ``n`` in descending order (when
+    sorted lexicographically).
 
     Full definition of ``p_n`` is written in the docs, see
     :ref:`user-guide_theory-behind_spin-hamiltonian`.
@@ -64,7 +64,7 @@ def _npn(nus, alphas) -> tuple:
     """
     n = len(alphas)
 
-    # optimization: n=2 are more frequent
+    # Optimization: n=2 are more frequent
     if n == 2:
         return 2, (1 if (nus[0] == (0, 0, 0) and alphas[0] == alphas[1]) else 2)
 
@@ -122,24 +122,27 @@ class _InteractionParameters:
     **Promises.** Must hold for any container at any moment:
 
     * ``specs``: ``n, p_n`` exactly match their ``nus, alphas``.
-    * ``len(nus) == len(alphas) - 1``, i.e. ``alphas[0]`` sits in ``(0, 0, 0)`` unit
-      cell, whose nu is not stored. ``alphas[i]`` sits in ``nus[i-1]`` unit cell
-      for ``i > 0``.
-    * The container is sorted by ``specs``. Thus, each group of parameters, defined by
-      the pair ``n, p_n`` is contiguous and can be found by bisection and iterated over.
-    * ``specs`` are unique within the container. Two parameters describing the same
-      interaction cannot coexist.
+    * ``len(nus) == len(alphas) - 1``, i.e. ``alphas[0]`` sits in ``(0, 0, 0)``
+      unit cell, whose nu is not stored. ``alphas[i]`` sits in ``nus[i-1]`` unit
+      cell for ``i > 0``.
+    * The container is sorted by ``specs``. Thus, each group of parameters,
+      defined by the pair ``n, p_n`` is contiguous and can be found by bisection
+      and iterated over.
+    * ``specs`` are unique within the container. Two parameters describing the
+      same interaction cannot coexist.
     * Shape of parameters: ``parameter.shape == (3,)*n`` at all times.
 
-    **Bookkeeping.** ``n, p_n`` are stored (for speed), but computed by the container
-    from ``nus, alphas``. These can not be supplied to the container from outside, nor
-    edited. Boundaries of ``(n, p_n)`` groups are derived by bisection, not stored.
+    **Bookkeeping.** ``n, p_n`` are stored (for speed), but computed by the
+    container from ``nus, alphas``. These can not be supplied to the container
+    from outside, nor edited. Boundaries of ``(n, p_n)`` groups are derived by
+    bisection, not stored.
 
-    **Ownership.** Parameters are copied on input. Iteration yields read-only views.
+    **Ownership.** Parameters are copied on input. Iteration yields read-only
+    views.
 
-    **Duplicates.** Duplicate ``specs`` are excluded by design. Every operation that
-    could produce one takes an explicit rule (for example ``on_duplicate``) for
-    resolving it, so no repair step is needed.
+    **Duplicates.** Duplicate ``specs`` are excluded by design. Every operation
+    that could produce one takes an explicit rule (for example
+    ``on_duplicate``) for resolving it, so no repair step is needed.
     """
 
     def __init__(self) -> None:
