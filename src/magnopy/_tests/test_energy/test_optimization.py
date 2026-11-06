@@ -120,3 +120,27 @@ def test_afm(on_site, sd):
         np.allclose(sd_opt[0], -np.array(sd), atol=1e-4)
         and np.allclose(sd_opt[1], sd, atol=1e-4)
     )
+
+
+@pytest.mark.parametrize("number_spins", [1, 2])
+def test_flat_initial_guess(number_spins):
+    spinham = SpinHamiltonian(
+        cell=np.eye(3),
+        atoms=dict(
+            names=[f"Fe{i}" for i in range(number_spins)],
+            spins=[1] * number_spins,
+            positions=[[0, 0, 0]] * number_spins,
+        ),
+        convention=Convention(spin_normalized=False, multiple_counting=True, c1=1),
+    )
+    for alpha in range(number_spins):
+        spinham.add(nus=[], alphas=[alpha], parameter=[0, 0, -1])
+    energy = Energy(spinham)
+    initial_guess = [1, 0, 1]
+
+    optimized = energy.optimize(initial_guess=initial_guess, quiet=True)
+
+    assert optimized.shape == (number_spins, 3)
+    assert np.allclose(optimized, [[0, 0, 1]] * number_spins, atol=1e-4)
+    assert np.isclose(energy(optimized), -number_spins)
+    assert initial_guess == [1, 0, 1]

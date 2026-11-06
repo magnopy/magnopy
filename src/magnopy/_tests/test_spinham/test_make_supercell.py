@@ -20,11 +20,13 @@
 
 
 import numpy as np
+import pytest
 from hypothesis import given
 from hypothesis import strategies as st
 from hypothesis.extra.numpy import arrays as harrays
 
-from magnopy import Convention, SpinHamiltonian, make_supercell
+from magnopy import Convention, Energy, SpinHamiltonian, make_supercell
+from magnopy.examples import cubic_ferro_nn
 
 MAX_MODULUS = 1e8
 RANDOM_CELL = harrays(
@@ -115,3 +117,17 @@ def test_atoms(i, j, k, N):
                         ],
                         new_position,
                     )
+
+
+@pytest.mark.parametrize("units", ["meV", "eV", "J"])
+@pytest.mark.parametrize("supercell", [(1, 1, 1), (2, 1, 2)])
+def test_supercell_preserves_energy_scale(units, supercell):
+    spinham = cubic_ferro_nn()
+    spinham.units = units
+    new_spinham = make_supercell(spinham, supercell)
+    repetitions = int(np.prod(supercell))
+
+    assert new_spinham.units == spinham.units
+    original_energy = Energy(spinham)([[0, 0, 1]])
+    supercell_energy = Energy(new_spinham)([[0, 0, 1]] * repetitions)
+    assert np.isclose(supercell_energy, repetitions * original_energy)
