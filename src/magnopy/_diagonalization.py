@@ -247,7 +247,9 @@ def solve_via_colpa(D):
         raise ColpaFailed
 
     # Solve the standard eigenvalue problem for K g K^{\dag}
-    L, U = np.linalg.eig(K @ g @ np.conjugate(K).T)
+    # The auxiliary matrix is Hermitian. Orthonormal eigenvectors are required
+    # for the para-unitary transformation, including within degenerate subspaces.
+    L, U = np.linalg.eigh(K @ g @ np.conjugate(K).T)
 
     # Sort with respect to L, in descending order
 
