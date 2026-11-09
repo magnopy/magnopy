@@ -105,3 +105,34 @@ Magnopy is a relatively young code and we would highly appreciate your support.
     `GitHub <https://github.com/magnopy/magnopy>`_.
 *   Give feedback on your experience with Magnopy (see :ref:`support` page).
 *   If you use Magnopy in your research, cite it (see :ref:`cite` page).
+
+
+License
+=======
+
+The source code of Magnopy is licensed under the GNU General Public
+License (GPL-3.0). See the "|LICENSE|_" file in the |repository|_.
+
+In addition, if you use Magnopy in a scientific publication, cite the preprint
+available at `arxiv.org/abs/2611.06833 <https://arxiv.org/abs/2611.06833>`_.
+
+.. code-block:: text
+
+    Rybakov, A.  and Marino, M. and Blanter, Y. M. and Coronado, E. and Ferrer, J, 2026.
+    Quantum Spin Wave Theory with Multi-Spin Interactions for Magnetic Materials Modeling.
+    Preprint available at https://arxiv.org/abs/2611.06833
+
+.. code-block:: LaTeX
+
+    @misc{magnopy-preprint,
+        doi = {10.48550/ARXIV.2611.06833},
+        url = {https://arxiv.org/abs/2611.06833},
+        author = {Rybakov,  Andrey and Marino,  Marco and Blanter,  Yaroslav M. and Coronado,  Eugenio and Ferrer,  Jaime},
+        keywords = {Other Condensed Matter (cond-mat.other),  Computational Physics (physics.comp-ph),  FOS: Physical sciences},
+        title = {Quantum Spin Wave Theory with Multi-Spin Interactions for Magnetic Materials Modeling},
+        publisher = {arXiv},
+        year = {2026},
+    }
+
+For the detailed guide on how to cite the papers on which Magnopy depends
+see :ref:`Citation guide <cite>`.

@@ -278,6 +278,7 @@ custom_links = {
         "Supplementary material of paper about Magnopy",
         "https://docs.magnopy.org/en/latest/cite.html",
     ),
+    "LICENSE": ("LICENSE", "https://github.com/magnopy/magnopy/blob/main/LICENSE"),
 }
 rst_epilog += "\n".join(
     map(

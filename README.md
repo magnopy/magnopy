@@ -114,3 +114,33 @@ do not hesitate to contact us via one of the
 We welcome contributions to Magnopy. Visit the
 [development guide](https://docs.magnopy.org/en/latest/development/index.html)
 or contact authors of the project to find out more.
+
+
+## License
+
+The source code of Magnopy is licensed under the  GNU General Public
+License (GPL-3.0). See the ["LICENSE" file](https://github.com/magnopy/magnopy/blob/main/LICENSE) in the [Magnopy's repository](https://github.com/magnopy/magnopy).
+
+In addition, if you use magnopy in the scientific publication, cite the preprint
+available at `arxiv.org/abs/2611.06833 <https://arxiv.org/abs/2611.06833>`_.
+
+```text
+Rybakov, A.  and Marino, M. and Blanter, Y. M. and Coronado, E. and Ferrer, J, 2026.
+Quantum Spin Wave Theory with Multi-Spin Interactions for Magnetic Materials Modeling.
+Preprint available at https://arxiv.org/abs/2611.06833
+```
+
+```latex
+@misc{magnopy-preprint,
+  doi = {10.48550/ARXIV.2611.06833},
+  url = {https://arxiv.org/abs/2611.06833},
+  author = {Rybakov,  Andrey and Marino,  Marco and Blanter,  Yaroslav M. and Coronado,  Eugenio and Ferrer,  Jaime},
+  keywords = {Other Condensed Matter (cond-mat.other),  Computational Physics (physics.comp-ph),  FOS: Physical sciences},
+  title = {Quantum Spin Wave Theory with Multi-Spin Interactions for Magnetic Materials Modeling},
+  publisher = {arXiv},
+  year = {2026},
+}
+```
+
+For the detailed guide on how to cite the papers on which Magnopy depends
+see [Citation guide](https://docs.magnopy.org/en/latest/cite.html).
