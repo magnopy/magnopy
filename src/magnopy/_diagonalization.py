@@ -230,7 +230,7 @@ def solve_via_colpa(D):
         >>> D = [[1, 1j], [-1j, 2]]
         >>> E, G = magnopy.solve_via_colpa(D)
         >>> np.round(E, decimals=3)
-        array([0.618+0.j, 1.618+0.j])
+        array([0.618, 1.618])
         >>> np.allclose(G.conj().T @ np.diag(E) @ G, D)
         True
         >>> np.allclose(G @ g @ G.conj().T, g)
