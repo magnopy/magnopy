@@ -101,7 +101,7 @@ How to support Magnopy?
 
 Magnopy is a relatively young code and we would highly appreciate your support.
 
-*   If you use and like Magnopy, please give it a star on
+*   If you use and like Magnopy, give it a star on
     `GitHub <https://github.com/magnopy/magnopy>`_.
-*   Please give feedback on your experience with Magnopy (see :ref:`support` page).
+*   Give feedback on your experience with Magnopy (see :ref:`support` page).
 *   If you use Magnopy in your research, cite it (see :ref:`cite` page).
