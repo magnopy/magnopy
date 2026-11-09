@@ -749,7 +749,7 @@ class LSWT:
             >>> spinham = magnopy.examples.cubic_ferro_nn()
             >>> lswt = magnopy.LSWT(spinham=spinham, spin_directions=[[0, 0, 1]])
             >>> lswt.omega(k=[0, 0, 0.5], relative=True)
-            array([2.+0.j])
+            array([2.])
         """
 
         return self.diagonalize(k=k, relative=relative, units=units)[0]

@@ -247,6 +247,7 @@ def main():
     ###############
     plt.savefig("toc.eps", dpi=600)
     plt.savefig("toc.png", dpi=600)
+    plt.savefig("toc.pdf", dpi=600)
     plt.close()
 
 

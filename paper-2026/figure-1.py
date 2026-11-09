@@ -64,6 +64,7 @@ def main():
     # Save figure
     plt.savefig("figure-1.png", dpi=400)
     plt.savefig("figure-1.eps", dpi=400)
+    plt.savefig("figure-1.pdf", dpi=400)
     plt.close()
 
 
