@@ -261,7 +261,7 @@ def solve_via_colpa(D):
     # N positive (descending) followed by N negative
 
     L = L[::-1]
-    U = U[:, ::-1] # Reorder columns, not rows
+    U = U[:, ::-1]  # Reorder columns, not rows
 
     # Compute actual eigenvalues of D
     E = g @ L
