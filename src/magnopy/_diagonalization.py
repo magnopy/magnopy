@@ -213,9 +213,14 @@ def solve_via_colpa(D):
         >>> E, G = magnopy.solve_via_colpa(D)
         >>> np.round(E.real, decimals=0)
         array([1., 2.])
-        >>> np.round(G.real, decimals=0)
-        array([[1., 0.],
-               [0., 1.]])
+        >>> np.allclose(G.conj().T @ np.diag(E) @ G, D)
+        True
+        >>> g = np.diag([1, -1])
+        >>> np.allclose(G @ g @ G.conj().T, g)
+        True
+
+    The following example checks diagonalization and preservation of bosonic
+    commutation relations.
 
     .. doctest::
 
@@ -226,9 +231,10 @@ def solve_via_colpa(D):
         >>> E, G = magnopy.solve_via_colpa(D)
         >>> np.round(E, decimals=3)
         array([0.618+0.j, 1.618+0.j])
-        >>> np.round(G, decimals=4)
-        array([[ 1.082-0.j    ,  0.   +0.4133j],
-               [-0.   -0.4133j,  1.082-0.j    ]])
+        >>> np.allclose(G.conj().T @ np.diag(E) @ G, D)
+        True
+        >>> np.allclose(G @ g @ G.conj().T, g)
+        True
     """
 
     # Guarantee that D is 2Nx2N matrix
