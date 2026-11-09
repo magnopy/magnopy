@@ -13,6 +13,7 @@ Here's a list of the contributors who have shaped its evolution
 * `Marco Marino <https://github.com/marcomarino123>`_
 * `Jhon González <https://github.com/jwgonzal>`_
 * `prinsmag <https://github.com/prinsmag>`_
+* `Anton Akhmerov <https://github.com/akhmerov>`_
 * You can be the next one!
 
 Any contribution is welcome.

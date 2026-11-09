@@ -4,6 +4,29 @@
 Version 0.6
 ***********
 
+0.6.2
+=====
+
+**Date**: 9 November 2026
+
+New features
+------------
+
+* Uniform initial guess in :py:meth:`.Energy.optimize`.
+
+Bugfix
+------
+
+* Pass units from the original spinham to the spinham created on the supercell in :py:func:`.make_supercell`.
+* Fix a bug with the initial guess for a single spin (shape (3,)) in :py:meth:`.Energy.optimize`.
+
+Improvements
+------------
+
+* ``np.linalg.eigh`` instead of ``np.linalg.eig`` in :py:func:`.solve_via_colpa`. Correct eigenvalues for degenerate modes and a speed-up overall.
+
+
+
 0.6.1
 =====
 
