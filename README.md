@@ -122,7 +122,7 @@ The source code of Magnopy is licensed under the  GNU General Public
 License (GPL-3.0). See the ["LICENSE" file](https://github.com/magnopy/magnopy/blob/main/LICENSE) in the [Magnopy's repository](https://github.com/magnopy/magnopy).
 
 In addition, if you use magnopy in the scientific publication, cite the preprint
-available at `arxiv.org/abs/2611.06833 <https://arxiv.org/abs/2611.06833>`_.
+available at [arxiv.org/abs/2611.06833](https://arxiv.org/abs/2611.06833).
 
 ```text
 Rybakov, A.  and Marino, M. and Blanter, Y. M. and Coronado, E. and Ferrer, J, 2026.
