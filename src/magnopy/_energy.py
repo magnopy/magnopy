@@ -921,7 +921,7 @@ class Energy:
 
         initial_guess : (M, 3) or (3,) |array-like|_, optional
             Initial guess for the direction of the spin vectors.
-            A single direction is used for all magnetic atoms.
+            If shape is equal to ``(3,)`` then given direction is used for all magnetic atoms.
 
         energy_tolerance : float, default 1e-5
             Energy tolerance for the two consecutive steps of the optimization. In the units of meV.
