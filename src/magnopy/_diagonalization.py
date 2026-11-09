@@ -213,9 +213,14 @@ def solve_via_colpa(D):
         >>> E, G = magnopy.solve_via_colpa(D)
         >>> np.round(E.real, decimals=0)
         array([1., 2.])
-        >>> np.round(G.real, decimals=0)
-        array([[1., 0.],
-               [0., 1.]])
+        >>> np.allclose(G.conj().T @ np.diag(E) @ G, D)
+        True
+        >>> g = np.diag([1, -1])
+        >>> np.allclose(G @ g @ G.conj().T, g)
+        True
+
+    The following example checks diagonalization and preservation of bosonic
+    commutation relations.
 
     .. doctest::
 
@@ -225,10 +230,11 @@ def solve_via_colpa(D):
         >>> D = [[1, 1j], [-1j, 2]]
         >>> E, G = magnopy.solve_via_colpa(D)
         >>> np.round(E, decimals=3)
-        array([0.618+0.j, 1.618+0.j])
-        >>> np.round(G, decimals=4)
-        array([[ 1.082-0.j    ,  0.   +0.4133j],
-               [-0.   -0.4133j,  1.082-0.j    ]])
+        array([0.618, 1.618])
+        >>> np.allclose(G.conj().T @ np.diag(E) @ G, D)
+        True
+        >>> np.allclose(G @ g @ G.conj().T, g)
+        True
     """
 
     # Guarantee that D is 2Nx2N matrix
@@ -243,31 +249,19 @@ def solve_via_colpa(D):
         # while numpy gives KK^{\dag} by default,
         # thus upper=True is needed
         K = np.linalg.cholesky(D, upper=True)
-    except LinAlgError:
-        raise ColpaFailed
+    except LinAlgError as err:
+        raise ColpaFailed from err
 
     # Solve the standard eigenvalue problem for K g K^{\dag}
-    L, U = np.linalg.eig(K @ g @ np.conjugate(K).T)
+    # The auxiliary matrix is Hermitian. Orthonormal eigenvectors are required
+    # for the para-unitary transformation, including within degenerate subspaces.
+    L, U = np.linalg.eigh(K @ g @ np.conjugate(K).T)
 
-    # Sort with respect to L, in descending order
+    # eigh returns ascending eigenvalues; reverse to get
+    # N positive (descending) followed by N negative
 
-    # Step 1 put L as a first line on top of U:
-    # [
-    #   [L_0, ..., L_2N],
-    #   [U_0_0, ..., U_0_2N],
-    #   ...
-    #   [U_2N_0, ..., U_2N_2N],
-    # ]
-    U = np.concatenate((L[np.newaxis, :], U), axis=0)
-
-    # Step 2 sort each row according to the sorted order of the first row (L)
-    U = U[:, np.argsort(U[0])]
-
-    # Step 3 separate L and U, and reverse the order to have
-    # first N eigenvalues to be positive
-    # and last N eigenvalues to be negative
-    L = U[0, ::-1]
-    U = U[1:, ::-1]
+    L = L[::-1]
+    U = U[:, ::-1]  # Reorder columns, not rows
 
     # Compute actual eigenvalues of D
     E = g @ L

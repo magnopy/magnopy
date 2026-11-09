@@ -921,6 +921,7 @@ class Energy:
 
         initial_guess : (M, 3) or (3,) |array-like|_, optional
             Initial guess for the direction of the spin vectors.
+            If shape is equal to ``(3,)`` then given direction is used for all magnetic atoms.
 
         energy_tolerance : float, default 1e-5
             Energy tolerance for the two consecutive steps of the optimization. In the units of meV.
@@ -954,6 +955,10 @@ class Energy:
 
         if initial_guess is None:
             initial_guess = np.random.uniform(low=-1, high=1, size=(self.M, 3))
+
+        initial_guess = np.array(initial_guess, dtype=float)
+        if initial_guess.shape == (3,):
+            initial_guess = np.tile(initial_guess, (self.M, 1))
 
         sd_k = initial_guess / np.linalg.norm(initial_guess, axis=1)[:, np.newaxis]
 

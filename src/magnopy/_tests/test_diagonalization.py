@@ -81,3 +81,24 @@ def test_solve_via_colpa_2_x_2(D):
 
     except ColpaFailed:
         pass
+
+
+@pytest.mark.parametrize("complex_matrix", [False, True])
+def test_solve_via_colpa_degenerate_modes(complex_matrix):
+    rng = np.random.default_rng(4)
+    matrix = rng.normal(size=(3, 3))
+    if complex_matrix:
+        matrix = matrix + 1j * rng.normal(size=(3, 3))
+    Q, _ = np.linalg.qr(matrix)
+    A = Q @ np.diag([1.0, 1.0, 2.0]) @ Q.conj().T
+    D = np.zeros((6, 6), dtype=complex)
+    D[:3, :3] = A
+    D[3:, 3:] = A.conj()
+    g = np.diag([1.0, 1.0, 1.0, -1.0, -1.0, -1.0])
+
+    E, G = solve_via_colpa(D)
+    G_inv = np.linalg.inv(G)
+
+    assert np.allclose(E, [2, 1, 1, 1, 1, 2])
+    assert np.allclose(G @ g @ G.conj().T, g)
+    assert np.allclose(G_inv.conj().T @ D @ G_inv, np.diag(E))

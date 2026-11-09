@@ -250,7 +250,10 @@ def make_supercell(spinham: SpinHamiltonian, supercell):
                             new_atoms[key].append(spinham.atoms[key][atom_index])
 
     new_spinham = SpinHamiltonian(
-        cell=new_cell, atoms=new_atoms, convention=spinham.convention
+        cell=new_cell,
+        atoms=new_atoms,
+        convention=spinham.convention,
+        units=spinham.units,
     )
 
     def get_new_indices(alpha, nu, ijk):
